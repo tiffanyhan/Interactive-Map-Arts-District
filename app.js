@@ -1,5 +1,4 @@
 /* --------------------- Model Data ---------------------- */
-
 /*
 var location = {
 	lat: 34.040536,
@@ -10,8 +9,7 @@ var mapOptions = {
 	center: new google.maps.LatLng(location.lat, location.lng),
 	zoom: 15,
 	mapTypeId: google.maps.MapTypeId.ROADMAP
-}
-
+};
 
 */
 /* --------------------- ViewModel ----------------------*/
@@ -30,4 +28,3 @@ var ViewModel = function() {
 ko.applyBindings(new ViewModel());
 
 */
-
