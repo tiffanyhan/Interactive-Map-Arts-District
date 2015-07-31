@@ -1,19 +1,13 @@
 /* --------------------- Model Data ---------------------- */
-/*
-var location = {
-	lat: 34.040536,
-	lng: -118.236646
-};
 
 var mapOptions = {
-	center: new google.maps.LatLng(location.lat, location.lng),
+	center: new google.maps.LatLng(34.040536, -118.236646),
 	zoom: 15,
 	mapTypeId: google.maps.MapTypeId.ROADMAP
 };
 
-*/
 /* --------------------- ViewModel ----------------------*/
-/*
+
 var ViewModel = function() {
 	var self = this;
 
@@ -26,5 +20,3 @@ var ViewModel = function() {
 };
 
 ko.applyBindings(new ViewModel());
-
-*/
