@@ -1,17 +1,19 @@
 /* --------------------- Model Data ---------------------- */
 
-var location = {
-	lat: 34.040536,
-	lng: -118.236646
+var data = {
+	locations: [
+		{
+			lat: 34.040536,
+			lng: -118.236646
+		}
+	]
 };
 
 var mapOptions = {
-	center: new google.maps.LatLng(location.lat, location.lng),
+	center: new google.maps.LatLng(data.locations[0].lat, data.locations[0].lng),
 	zoom: 15,
 	mapTypeId: google.maps.MapTypeId.ROADMAP
-}
-
-
+};
 
 /* --------------------- ViewModel ----------------------*/
 
