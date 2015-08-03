@@ -1,14 +1,16 @@
 /* --------------------- Model Data ---------------------- */
 
-	var mapOptions = {
+var Model = {
+
+	mapOptions: {
 		center: {lat: 34.043450, lng: -118.236525},
 		zoom: 16,
 		mapTypeId: google.maps.MapTypeId.TERRAIN
-	};
+	},
 
-	var cityString = 'Los Angeles, CA 90013';
+	cityString: 'Los Angeles, CA 90013',
 
-	var locations = [
+	locations: [
 		{
 			coordinates: {lat: 34.045600, lng: -118.236063},
 			name: 'Wurstkuche',
@@ -37,7 +39,8 @@
 			linkName: 'xlanesla.com',
 			phone: '(213) 229-8910'
 		}
-	];
+	]
+};
 
 /* --------------------- ViewModel ----------------------*/
 
@@ -47,28 +50,29 @@ var ViewModel = function() {
 	this.initialize = function() {
 		// create the map
 		var mapCanvas = document.getElementById('map-canvas');
-		var map = new google.maps.Map(mapCanvas, mapOptions);
+		var map = new google.maps.Map(mapCanvas, Model.mapOptions);
 
 		// declare variables outside of the loop
-		var locationsLength = locations.length;
-		var i, marker, infoWindow, addClickEvent;
+		var locationsLength = Model.locations.length;
+		var i, location, marker, infoWindow, addClickEvent;
 
 		for (i = 0; i < locationsLength; i++) {
+			location = Model.locations[i];
 			// add markers
 			marker = new google.maps.Marker({
-				position: locations[i].coordinates
+				position: location.coordinates
 			});
 			marker.setMap(map);
 
 			// make an info window
 			infoWindow = new google.maps.InfoWindow({
-				content: '<h1>' + locations[i].name + '</h1>' +
-					 	 '<p>' + locations[i].street + '</p>' +
-					 	 '<p>' + cityString + '</p>' +
+				content: '<h1>' + location.name + '</h1>' +
+					 	 '<p>' + location.street + '</p>' +
+					 	 '<p>' + Model.cityString + '</p>' +
 					 	 '<br>' +
-					 	 '<p><a href="http://' + locations[i].linkName + '">'
-					 	 + locations[i].linkName + '</a> | '
-					 	 + locations[i].phone + '</p>'
+					 	 '<p><a href="http://' + location.linkName + '">'
+					 	 + location.linkName + '</a> | '
+					 	 + location.phone + '</p>'
 			});
 
 			// add info windows by wrapping the event handler in an outside
