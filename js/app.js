@@ -5,7 +5,16 @@ var Model = {
 	mapOptions: {
 		center: {lat: 34.043450, lng: -118.236525},
 		zoom: 16,
-		mapTypeId: google.maps.MapTypeId.TERRAIN
+		mapTypeId: google.maps.MapTypeId.TERRAIN,
+		mapTypeControlOptions: {
+			position: google.maps.ControlPosition.TOP_RIGHT
+		},
+		panControlOptions: {
+			position: google.maps.ControlPosition.LEFT_BOTTOM
+		},
+		zoomControlOptions: {
+			position: google.maps.ControlPosition.RIGHT_CENTER
+		}
 	},
 
 	cityString: 'Los Angeles, CA 90013',
@@ -38,7 +47,28 @@ var Model = {
 			street: '333 Alameda St #300',
 			linkName: 'xlanesla.com',
 			phone: '(213) 229-8910'
-		}
+		},
+		{
+			coordinates: {lat: 34.046143, lng: -118.234074},
+			name: 'Eat Drink Americano',
+			street: '923 E 3rd St #101',
+			linkName: 'eatdrinkamericano.com',
+			phone: '(213) 620-0781'
+		},
+		{
+			coordinates: {lat: 34.045414, lng: -118.236251},
+			name: 'The Pie Hole',
+			street: '714 Traction Ave',
+			linkName: 'thepieholela.com',
+			phone: '(213) 537-0115'
+		},
+		{
+			coordinates: {lat: 34.045279, lng: -118.238533},
+			name: 'Shojin',
+			street: '333 Alameda St #310',
+			linkName: 'theshojin.com',
+			phone: '(213) 617-0305'
+		},
 	]
 };
 
@@ -72,13 +102,13 @@ var ViewModel = function() {
 			addClickEvent = function(locationCopy, markerCopy, infoWindowCopy) {
 				// the click event handler for each marker
 				google.maps.event.addListener(marker, 'click', function() {
-					// set the info wondow with the right content
+					// set the info window with the right content
 					infoWindowCopy.setContent(
 						 '<h1>' + locationCopy.name + '</h1>' +
 					 	 '<p>' + locationCopy.street + '</p>' +
 					 	 '<p>' + Model.cityString + '</p>' +
 					 	 '<br>' +
-					 	 '<p><a href="http://' + locationCopy.linkName + '">'
+					 	 '<p><a target="_blank" href="http://' + locationCopy.linkName + '">'
 					 	 + locationCopy.linkName + '</a> | '
 					 	 + locationCopy.phone + '</p>'
 					);
