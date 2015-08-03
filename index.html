@@ -10,11 +10,18 @@
 		<script src="js/app.js"></script>
 	</head>
 	<body>
-		<div class="list-view">
-			<h1>Key Locations</h1>
-		</div>
 		<div id="map-canvas"></div>
+
+		<div class="list-view">
+			<form class="form">
+				<span class="search-text">Search key locations:</span>
+				<input type="search">
+			</form>
+			<ul data-bind="foreach: Model.locations" class="list">
+				<li data-bind="text: name"></li>
+			</ul>
+		</div>
 
 	</body>
 
-</html>.
+</html>
