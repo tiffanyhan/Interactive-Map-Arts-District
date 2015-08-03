@@ -12,4 +12,13 @@ h1 {
 
 body {
 	line-height: .6em;
+	font-family: arial;
+}
+
+.list-view {
+	width: 25%;
+	height: 100%;
+	position: absolute;
+	z-index: 1;
+	background-color: white;
 }

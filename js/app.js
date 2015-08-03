@@ -3,14 +3,14 @@
 var Model = {
 
 	mapOptions: {
-		center: {lat: 34.043450, lng: -118.236525},
+		center: {lat: 34.044364, lng: -118.239661},
 		zoom: 16,
 		mapTypeId: google.maps.MapTypeId.TERRAIN,
 		mapTypeControlOptions: {
 			position: google.maps.ControlPosition.TOP_RIGHT
 		},
 		panControlOptions: {
-			position: google.maps.ControlPosition.LEFT_BOTTOM
+			position: google.maps.ControlPosition.RIGHT_BOTTOM
 		},
 		zoomControlOptions: {
 			position: google.maps.ControlPosition.RIGHT_CENTER
