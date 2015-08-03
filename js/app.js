@@ -54,8 +54,11 @@ var ViewModel = function() {
 
 		// declare variables outside of the loop
 		var locationsLength = Model.locations.length;
-		var i, location, marker, infoWindow, addClickEvent;
+		var i, location, marker, addClickEvent;
+		// only show one info window at a time
+		var infoWindow = new google.maps.InfoWindow();
 
+		// makes the markers and the info windows
 		for (i = 0; i < locationsLength; i++) {
 			location = Model.locations[i];
 			// add markers
@@ -64,24 +67,26 @@ var ViewModel = function() {
 			});
 			marker.setMap(map);
 
-			// make an info window
-			infoWindow = new google.maps.InfoWindow({
-				content: '<h1>' + location.name + '</h1>' +
-					 	 '<p>' + location.street + '</p>' +
-					 	 '<p>' + Model.cityString + '</p>' +
-					 	 '<br>' +
-					 	 '<p><a href="http://' + location.linkName + '">'
-					 	 + location.linkName + '</a> | '
-					 	 + location.phone + '</p>'
-			});
-
 			// add info windows by wrapping the event handler in an outside
 			// function to create a closure
-			addClickEvent = function(iCopy, markerCopy, infoWindowCopy) {
+			addClickEvent = function(locationCopy, markerCopy, infoWindowCopy) {
+				// the click event handler for each marker
 				google.maps.event.addListener(marker, 'click', function() {
+					// set the info wondow with the right content
+					infoWindowCopy.setContent(
+						 '<h1>' + locationCopy.name + '</h1>' +
+					 	 '<p>' + locationCopy.street + '</p>' +
+					 	 '<p>' + Model.cityString + '</p>' +
+					 	 '<br>' +
+					 	 '<p><a href="http://' + locationCopy.linkName + '">'
+					 	 + locationCopy.linkName + '</a> | '
+					 	 + locationCopy.phone + '</p>'
+					);
+					// open the info window when clicked
 					infoWindowCopy.open(map, markerCopy);
 				});
-			}(i, marker, infoWindow);
+			// call the outside function immediately
+			}(location, marker, infoWindow);
 		}
 	};
 	// wait until the page has loaded to create the map
