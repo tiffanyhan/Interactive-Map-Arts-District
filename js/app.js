@@ -1,62 +1,41 @@
 /* --------------------- Model Data ---------------------- */
 
-	var locations = {
-		losAngeles: {lat: 34.043450, lng: -118.236525},
-		Wurstkuche: {lat: 34.045600, lng: -118.236063},
-		Urth: {lat: 34.041979, lng: -118.235406},
-		eightyTwo: {lat: 34.045406, lng: -118.237441},
-		xLanes: {lat: 34.045161, lng: -118.238748},
-	};
-
 	var mapOptions = {
 		center: {lat: 34.043450, lng: -118.236525},
 		zoom: 16,
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	};
 
-	var infoWindows = {
-		Wurstkuche: new google.maps.InfoWindow({
-			content: '<h1>Wurstkuche</h1>' +
-					 '<p>800 E 3rd St</p>' +
-					 '<p>Los Angeles, CA 90013</p>' + '<br>' +
-					 '<p><a href="http://wurstkuche.com">wurstkuche.com</a> | (213) 687-4444</p>'
-		}),
-		Urth: new google.maps.InfoWindow({
-			content: '<h1>Urth Caffe</h1>' +
-					 '<p>451 S Hewitt St</p>' +
-					 '<p>Los Angeles, CA 90013</p>' + '<br>' +
-					 '<p><a href="http://urthcaffe.com">urthcaffe.com</a> | (213) 797-4534</p>'
-		}),
-		eightyTwo: new google.maps.InfoWindow({
-			content: '<h1>EightyTwo</h1>' +
-					 '<p>707 E 4th Pl</p>' +
-					 '<p>Los Angeles, CA 90013</p>' + '<br>' +
-					 '<p><a href="http://eightytwo.la">eightytwo.la</a> | (213) 626-8200</p>'
-		}),
-		xLanes: new google.maps.InfoWindow({
-			content: '<h1>X Lanes</h1>' +
-					 '<p>333 Alameda St #300</p>' +
-					 '<p>Los Angeles, CA 90013</p>' + '<br>' +
-					 '<p><a href="http://xlanesla.com">xlanesla.com</a> | 213) 229-8910</p>'
-		})
-	};
+	var cityString = 'Los Angeles, CA 90013';
 
-	var markerData = [
+	var locations = [
 		{
-			position: locations.Wurstkuche,
-			infoWindow: infoWindows.Wurstkuche
+			coordinates: {lat: 34.045600, lng: -118.236063},
+			name: 'Wurstkuche',
+			street: '800 E 3rd St',
+			linkName: 'wurstkuche.com',
+			phone: '(213) 687-4444'
 		},
 		{
-			position: locations.Urth,
-			infoWindow: infoWindows.Urth
+			coordinates: {lat: 34.041979, lng: -118.235406},
+			name: 'Urth Caffe',
+			street: '451 S Hewitt St',
+			linkName: 'urthcaffe.com',
+			phone: '(213) 797-4534'
 		},
 		{
-			position: locations.eightyTwo,
-			infoWindow: infoWindows.eightyTwo
+			coordinates: {lat: 34.045406, lng: -118.237441},
+			name: 'EightyTwo',
+			street: '707 E 4th Pl',
+			linkName: 'eightytwo.la',
+			phone: '(213) 626-8200'
 		},
 		{
-			position: locations.xLanes,
-			infoWindow: infoWindows.xLanes
+			coordinates: {lat: 34.045161, lng: -118.238748},
+			name: 'X Lanes',
+			street: '333 Alameda St #300',
+			linkName: 'xlanesla.com',
+			phone: '(213) 229-8910'
 		}
 	];
 
@@ -71,20 +50,34 @@ var ViewModel = function() {
 		var map = new google.maps.Map(mapCanvas, mapOptions);
 
 		// declare variables outside of the loop
-		var markerDataLength = markerData.length;
-		var i, marker, addClickEvent;
-		// add markers with info windows
-		for (i = 0; i < markerDataLength; i++) {
+		var locationsLength = locations.length;
+		var i, marker, infoWindow, addClickEvent;
+
+		for (i = 0; i < locationsLength; i++) {
 			// add markers
-			marker = new google.maps.Marker(markerData[i]);
+			marker = new google.maps.Marker({
+				position: locations[i].coordinates
+			});
 			marker.setMap(map);
+
+			// make an info window
+			infoWindow = new google.maps.InfoWindow({
+				content: '<h1>' + locations[i].name + '</h1>' +
+					 	 '<p>' + locations[i].street + '</p>' +
+					 	 '<p>' + cityString + '</p>' +
+					 	 '<br>' +
+					 	 '<p><a href="http://' + locations[i].linkName + '">'
+					 	 + locations[i].linkName + '</a> | '
+					 	 + locations[i].phone + '</p>'
+			});
+
 			// add info windows by wrapping the event handler in an outside
 			// function to create a closure
-			addClickEvent = function(iCopy, markerCopy) {
+			addClickEvent = function(iCopy, markerCopy, infoWindowCopy) {
 				google.maps.event.addListener(marker, 'click', function() {
-					markerData[iCopy].infoWindow.open(map, markerCopy);
+					infoWindowCopy.open(map, markerCopy);
 				});
-			}(i, marker);
+			}(i, marker, infoWindow);
 		}
 	};
 	// wait until the page has loaded to create the map
