@@ -17,7 +17,7 @@ body {
 }
 
 .list-view {
-	width: 100%;
+	width: 98%;
 	height: 33%;
 	position: absolute;
 	z-index: 1;
@@ -29,4 +29,38 @@ body {
 	width: 100%;
 	-webkit-appearance: none;
 	height: 40px;
+}
+
+.list {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	flex-wrap: wrap;
+	-webkit-flex-wrap: wrap;
+}
+
+.list-item {
+	font-size: 1.5em;
+	line-height: 2em;
+	border: 1px solid black;
+	text-align: center;
+	width: 97%;
+	flex-grow: 1;
+}
+
+@media screen and (min-width: 550px) {
+	.list-item {
+		width: 48.5%;
+	}
+}
+
+@media screen and (min-width: 800px) {
+	.list-item {
+		width: 32.33%;
+	}
 }

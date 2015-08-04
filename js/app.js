@@ -68,14 +68,37 @@ var Model = {
 			street: '333 Alameda St #310',
 			linkName: 'theshojin.com',
 			phone: '(213) 617-0305'
-		},
-	]
+		}
+	],
+
+	makeInfoWindow: function(i) {
+
+		return '<h1>' + Model.locations[i].name + '</h1>' +
+			'<p>' + Model.locations[i].street + '</p>' +
+			'<p>' + Model.cityString + '</p>' +
+			'<br>' +
+			'<p><a target="_blank" href="http://' + Model.locations[i].linkName + '">'
+			+ Model.locations[i].linkName + '</a> | '
+			+ Model.locations[i].phone + '</p>';
+	}
 };
+
 
 /* --------------------- ViewModel ----------------------*/
 
 var ViewModel = function() {
 	var self = this;
+
+	self.myMessage = ko.observable('Hello, World!');
+	self.locationsList = ko.observableArray();
+
+	Model.locations.forEach(function(element) {
+		self.locationsList.push(element.name);
+	});
+
+
+
+
 	// initialize the map
 	this.initialize = function() {
 		// create the map
@@ -84,39 +107,33 @@ var ViewModel = function() {
 
 		// declare variables outside of the loop
 		var locationsLength = Model.locations.length;
-		var i, location, marker, addClickEvent;
+		var i, marker, location, addClickEvent;
 		// only show one info window at a time
 		var infoWindow = new google.maps.InfoWindow();
 
 		// makes the markers and the info windows
 		for (i = 0; i < locationsLength; i++) {
-			location = Model.locations[i];
 			// add markers
 			marker = new google.maps.Marker({
-				position: location.coordinates
+				position: Model.locations[i].coordinates
 			});
 			marker.setMap(map);
 
 			// add info windows by wrapping the event handler in an outside
 			// function to create a closure
-			addClickEvent = function(locationCopy, markerCopy, infoWindowCopy) {
+			addClickEvent = function(i, markerCopy, infoWindowCopy) {
 				// the click event handler for each marker
 				google.maps.event.addListener(marker, 'click', function() {
 					// set the info window with the right content
-					infoWindowCopy.setContent(
-						 '<h1>' + locationCopy.name + '</h1>' +
-					 	 '<p>' + locationCopy.street + '</p>' +
-					 	 '<p>' + Model.cityString + '</p>' +
-					 	 '<br>' +
-					 	 '<p><a target="_blank" href="http://' + locationCopy.linkName + '">'
-					 	 + locationCopy.linkName + '</a> | '
-					 	 + locationCopy.phone + '</p>'
-					);
+					var content = Model.makeInfoWindow(i);
+					console.log(content);
+
+					infoWindowCopy.setContent(content);
 					// open the info window when clicked
 					infoWindowCopy.open(map, markerCopy);
 				});
 			// call the outside function immediately
-			}(location, marker, infoWindow);
+			}(i, marker, infoWindow);
 		}
 	};
 	// wait until the page has loaded to create the map
