@@ -3,8 +3,8 @@
 var Model = {
 
 	mapOptions: {
-		center: {lat: 34.043450, lng: -118.236525},
-		zoom: 16,
+		center: {lat: 34.044174, lng: -118.236128},
+		zoom: 15,
 		mapTypeId: google.maps.MapTypeId.TERRAIN,
 		mapTypeControlOptions: {
 			position: google.maps.ControlPosition.TOP_CENTER
@@ -13,7 +13,7 @@ var Model = {
 			position: google.maps.ControlPosition.LEFT_TOP
 		},
 		zoomControlOptions: {
-			position: google.maps.ControlPosition.TOP_RIGHT
+			position: google.maps.ControlPosition.RIGHT_CENTER
 		}
 	},
 
