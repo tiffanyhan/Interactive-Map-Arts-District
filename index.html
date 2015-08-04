@@ -16,7 +16,7 @@
 
 		<div class="list-view">
 			<ul data-bind="foreach: locationsList" class="list">
-				<li data-bind="text: $data" class="list-item"></li>
+				<li data-bind="text: name, click: $parent.makeListClickable.bind($data, $index)" class="list-item"></li>
 			</ul>
 		</div>
 

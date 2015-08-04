@@ -93,10 +93,12 @@ var ViewModel = function() {
 	self.locationsList = ko.observableArray();
 
 	Model.locations.forEach(function(element) {
-		self.locationsList.push(element.name);
+		self.locationsList.push(element);
 	});
 
-
+	this.makeListClickable = function(index) {
+		console.log(index());
+	};
 
 
 	// initialize the map
@@ -126,7 +128,6 @@ var ViewModel = function() {
 				google.maps.event.addListener(marker, 'click', function() {
 					// set the info window with the right content
 					var content = Model.makeInfoWindow(i);
-					console.log(content);
 
 					infoWindowCopy.setContent(content);
 					// open the info window when clicked
@@ -134,6 +135,8 @@ var ViewModel = function() {
 				});
 			// call the outside function immediately
 			}(i, marker, infoWindow);
+
+			// self.makeListClickable(i, marker, infoWindow);
 		}
 	};
 	// wait until the page has loaded to create the map
