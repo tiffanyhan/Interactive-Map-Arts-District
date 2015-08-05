@@ -103,45 +103,45 @@ var ViewModel = function() {
 		google.maps.event.trigger(self.markersList[index()], 'click');
 	};
 
+	self.makeMarkersClickable = function(i, markerCopy, infoWindowCopy) {
+		var content;
+		// the click event handler for each marker
+		google.maps.event.addListener(markerCopy, 'click', function() {
+			// get the right content
+			content = Model.makeInfoWindow(i);
+			// put the content in the info window
+			infoWindowCopy.setContent(content);
+			// open the info window when clicked
+			infoWindowCopy.open(self.map, markerCopy);
+		});
+	};
 
 	// initialize the map
 	self.initialize = function() {
 		// create the map
 		var mapCanvas = document.getElementById('map-canvas');
-		var map = new google.maps.Map(mapCanvas, Model.mapOptions);
+		self.map = new google.maps.Map(mapCanvas, Model.mapOptions);
 
 		// declare variables outside of the loop
 		var locationsLength = Model.locations.length;
 		var i, marker, location, addClickEvent;
+
 		// make one info window
 		var infoWindow = new google.maps.InfoWindow();
 
-		// makes the markers
 		for (i = 0; i < locationsLength; i++) {
 			// make markers
 			marker = new google.maps.Marker({
 				position: Model.locations[i].coordinates
 			});
-			marker.setMap(map);
+			marker.setMap(self.map);
 
 			// add each marker to an array
 			self.markersList.push(marker);
 
 			// add info windows by wrapping the event handler in an outside
 			// function to create a closure
-			addClickEvent = function(i, markerCopy, infoWindowCopy) {
-				var content;
-				// the click event handler for each marker
-				google.maps.event.addListener(marker, 'click', function() {
-					// get the right content
-					content = Model.makeInfoWindow(i);
-					// put the content in the info window
-					infoWindowCopy.setContent(content);
-					// open the info window when clicked
-					infoWindowCopy.open(map, markerCopy);
-				});
-			// call the outside function immediately
-			}(i, marker, infoWindow);
+			self.makeMarkersClickable(i, marker, infoWindow);
 		}
 	};
 	// wait until the page has loaded to create the map
