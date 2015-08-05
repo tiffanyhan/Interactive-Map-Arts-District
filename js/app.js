@@ -89,20 +89,23 @@ var Model = {
 var ViewModel = function() {
 	var self = this;
 
-	self.myMessage = ko.observable('Hello, World!');
+	// make an array to hold each location object
 	self.locationsList = ko.observableArray();
-
+	// push each location object into the array
 	Model.locations.forEach(function(element) {
 		self.locationsList.push(element);
 	});
 
-	this.makeListClickable = function(index) {
-		console.log(index());
+	// make an array to hold each marker
+	self.markersList = [];
+	// link each list item to the correct info window
+	self.makeListClickable = function(index) {
+		google.maps.event.trigger(self.markersList[index()], 'click');
 	};
 
 
 	// initialize the map
-	this.initialize = function() {
+	self.initialize = function() {
 		// create the map
 		var mapCanvas = document.getElementById('map-canvas');
 		var map = new google.maps.Map(mapCanvas, Model.mapOptions);
@@ -110,33 +113,35 @@ var ViewModel = function() {
 		// declare variables outside of the loop
 		var locationsLength = Model.locations.length;
 		var i, marker, location, addClickEvent;
-		// only show one info window at a time
+		// make one info window
 		var infoWindow = new google.maps.InfoWindow();
 
-		// makes the markers and the info windows
+		// makes the markers
 		for (i = 0; i < locationsLength; i++) {
-			// add markers
+			// make markers
 			marker = new google.maps.Marker({
 				position: Model.locations[i].coordinates
 			});
 			marker.setMap(map);
 
+			// add each marker to an array
+			self.markersList.push(marker);
+
 			// add info windows by wrapping the event handler in an outside
 			// function to create a closure
 			addClickEvent = function(i, markerCopy, infoWindowCopy) {
+				var content;
 				// the click event handler for each marker
 				google.maps.event.addListener(marker, 'click', function() {
-					// set the info window with the right content
-					var content = Model.makeInfoWindow(i);
-
+					// get the right content
+					content = Model.makeInfoWindow(i);
+					// put the content in the info window
 					infoWindowCopy.setContent(content);
 					// open the info window when clicked
 					infoWindowCopy.open(map, markerCopy);
 				});
 			// call the outside function immediately
 			}(i, marker, infoWindow);
-
-			// self.makeListClickable(i, marker, infoWindow);
 		}
 	};
 	// wait until the page has loaded to create the map
