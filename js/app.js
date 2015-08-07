@@ -96,6 +96,8 @@ var ViewModel = function() {
 		self.locationsList.push(element);
 	});
 
+	self.query = ko.observable('');
+
 	self.search = function() {
 		var searchInput = $('.search-box').val().trim();
 		var searchValue = new RegExp(searchInput, 'i');
@@ -120,6 +122,8 @@ var ViewModel = function() {
 			}
 		}
 	};
+
+	self.query.subscribe(self.search);
 
 	// make an array to hold each marker
 	self.markersList = [];

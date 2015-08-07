@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<form data-bind="submit: search" class="form">
-			<input class="search-box" placeholder="Search key locations" type="search">
+			<input data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off" class="search-box" placeholder="Search key locations" type="search">
 		</form>
 
 		<div id="map-canvas"></div>
