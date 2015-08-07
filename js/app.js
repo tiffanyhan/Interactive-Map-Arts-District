@@ -78,8 +78,8 @@ var Model = {
 			'<p>' + Model.cityString + '</p>' +
 			'<br>' +
 			'<p><a target="_blank" href="http://' + Model.locations[i].linkName + '">'
-			+ Model.locations[i].linkName + '</a> | '
-			+ Model.locations[i].phone + '</p>';
+			+ Model.locations[i].linkName + '</a></p>'
+			+ '</p>' + Model.locations[i].phone + '</p>';
 	}
 };
 
@@ -96,6 +96,31 @@ var ViewModel = function() {
 		self.locationsList.push(element);
 	});
 
+	self.search = function() {
+		var searchInput = $('.search-box').val().trim();
+		var searchValue = new RegExp(searchInput, 'i');
+
+		var locationsListLength = self.locationsList().length;
+		var i;
+
+		self.markersList.forEach(function(element) {
+			element.setMap(self.map);
+		});
+
+		$('.list-item').show();
+
+		for (i = 0; i < locationsListLength; i++) {
+
+			var results = searchValue.test(self.locationsList()[i].name);
+
+			if (results === false) {
+				self.markersList[i].setMap(null);
+
+				$('#' + i).hide();
+			}
+		}
+	};
+
 	// make an array to hold each marker
 	self.markersList = [];
 	// link each list item to the correct info window
@@ -107,9 +132,9 @@ var ViewModel = function() {
 		var content;
 		// the click event handler for each marker
 		google.maps.event.addListener(markerCopy, 'click', function() {
-			// get the right content
+			// get and the right content
 			content = Model.makeInfoWindow(i);
-			// put the content in the info window
+			// set the right content
 			infoWindowCopy.setContent(content);
 			// open the info window when clicked
 			infoWindowCopy.open(self.map, markerCopy);
@@ -125,27 +150,24 @@ var ViewModel = function() {
 		// declare variables outside of the loop
 		var locationsLength = Model.locations.length;
 		var i, marker, location, addClickEvent;
-
 		// make one info window
 		var infoWindow = new google.maps.InfoWindow();
-
+		// for loop makes markers with info windows
 		for (i = 0; i < locationsLength; i++) {
 			// make markers
 			marker = new google.maps.Marker({
 				position: Model.locations[i].coordinates
 			});
 			marker.setMap(self.map);
-
 			// add each marker to an array
 			self.markersList.push(marker);
-
-			// add info windows by wrapping the event handler in an outside
-			// function to create a closure
+			// add info windows
 			self.makeMarkersClickable(i, marker, infoWindow);
 		}
 	};
 	// wait until the page has loaded to create the map
 	google.maps.event.addDomListener(window, 'load', this.initialize);
+
 };
 
 ko.applyBindings(new ViewModel());

@@ -5,10 +5,11 @@
 		<title>Neighborhood Map Project</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="style.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBo5PO8DIjY-j-2UbddSuDcKGV2d4XVx9g"></script>
 	</head>
 	<body>
-		<form class="form">
+		<form data-bind="submit: search" class="form">
 			<input class="search-box" placeholder="Search key locations" type="search">
 		</form>
 
@@ -16,7 +17,7 @@
 
 		<div class="list-view">
 			<ul data-bind="foreach: locationsList" class="list">
-				<li data-bind="text: name, click: $parent.makeListClickable.bind($data, $index)" class="list-item"></li>
+				<li data-bind="text: name, click: $parent.makeListClickable.bind($data, $index), attr: {id: $index}" class="list-item"></li>
 			</ul>
 		</div>
 
