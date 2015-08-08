@@ -26,7 +26,8 @@ var Model = {
 			street: '800 E 3rd St',
 			linkName: 'wurstkuche.com',
 			phone: '(213) 687-4444',
-			keywords: ['Wurstkuche', 'food']
+			icon: 'images/green-dot.png',
+			type: 'food'
 		},
 		{
 			coordinates: {lat: 34.041979, lng: -118.235406},
@@ -34,7 +35,8 @@ var Model = {
 			street: '451 S Hewitt St',
 			linkName: 'urthcaffe.com',
 			phone: '(213) 797-4534',
-			keywords: ['Urth Caffe', 'coffee', 'cafe']
+			icon: 'images/red-dot.png',
+			type: 'coffee'
 		},
 		{
 			coordinates: {lat: 34.045406, lng: -118.237441},
@@ -42,7 +44,8 @@ var Model = {
 			street: '707 E 4th Pl',
 			linkName: 'eightytwo.la',
 			phone: '(213) 626-8200',
-			keywords: ['EightyTwo', 'arcade', 'bar', 'drinks']
+			icon: 'images/blue-dot.png',
+			type: 'drinks'
 		},
 		{
 			coordinates: {lat: 34.045161, lng: -118.238748},
@@ -50,7 +53,8 @@ var Model = {
 			street: '333 Alameda St #300',
 			linkName: 'xlanesla.com',
 			phone: '(213) 229-8910',
-			keywords: ['X Lanes', 'bowling']
+			icon: 'images/blue-dot.png',
+			type: 'drinks'
 		},
 		{
 			coordinates: {lat: 34.046143, lng: -118.234074},
@@ -58,7 +62,8 @@ var Model = {
 			street: '923 E 3rd St #101',
 			linkName: 'eatdrinkamericano.com',
 			phone: '(213) 620-0781',
-			keywords: ['Eat Drink Americano', 'food']
+			icon: 'images/red-dot.png',
+			type: 'coffee'
 		},
 		{
 			coordinates: {lat: 34.045414, lng: -118.236251},
@@ -66,7 +71,8 @@ var Model = {
 			street: '714 Traction Ave',
 			linkName: 'thepieholela.com',
 			phone: '(213) 537-0115',
-			keywords: ['The Pie Hole', 'food']
+			icon: 'images/green-dot.png',
+			type: 'food'
 		},
 		{
 			coordinates: {lat: 34.045279, lng: -118.238533},
@@ -74,7 +80,8 @@ var Model = {
 			street: '333 Alameda St #310',
 			linkName: 'theshojin.com',
 			phone: '(213) 617-0305',
-			keywords: ['Shojin', 'food', 'sushi', 'japanese']
+			icon: 'images/green-dot.png',
+			type: 'food'
 		}
 	],
 
@@ -103,12 +110,36 @@ var ViewModel = function() {
 		self.locationsList.push(element);
 	});
 
+	self.locationsListLength = self.locationsList().length;
+
+	self.filterAll = function() {
+		for (var i = 0; i < self.locationsListLength; i++) {
+
+		}
+	}
+
+	self.filterFood = function() {
+		for (var i = 0; i < self.locationsListLength; i++) {
+
+		}
+	};
+
+	self.filterCoffee = function() {
+		for (var i = 0; i < self.locationsListLength; i++) {
+
+		}
+	};
+
+	self.filterDrinks = function() {
+		for (var i = 0; i < self.locationsListLength; i++) {
+
+		}
+	};
+
 	self.query = ko.observable('');
 
 	self.search = function() {
 		var searchValue = new RegExp(self.query(), 'i');
-
-		var locationsListLength = self.locationsList().length;
 		var i;
 
 		self.markersList.forEach(function(element) {
@@ -117,11 +148,11 @@ var ViewModel = function() {
 
 		$('.list-item').show();
 
-		for (i = 0; i < locationsListLength; i++) {
+		for (i = 0; i < self.locationsListLength; i++) {
 
-			var results = searchValue.test(self.locationsList()[i].name);
+			var result = searchValue.test(self.locationsList()[i].name);
 
-			if (results === false) {
+			if (result === false) {
 				self.markersList[i].setMap(null);
 
 				$('#' + i).hide();
@@ -166,7 +197,8 @@ var ViewModel = function() {
 		for (i = 0; i < locationsLength; i++) {
 			// make markers
 			marker = new google.maps.Marker({
-				position: Model.locations[i].coordinates
+				position: Model.locations[i].coordinates,
+				icon: Model.locations[i].icon
 			});
 			marker.setMap(self.map);
 			// add each marker to an array
