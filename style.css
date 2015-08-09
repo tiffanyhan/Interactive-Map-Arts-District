@@ -53,6 +53,11 @@ body {
 	flex-grow: 1;
 }
 
+.key-container {
+	max-width: 500px;
+	margin: 0 auto;
+}
+
 .key {
 	display: -webkit-box;
 	display: -moz-box;
@@ -68,7 +73,7 @@ body {
 	margin: 5px;
 }
 
-.filter {
+.show {
 	margin: 0;
 	padding: 0;
 	font-size: 1em;
@@ -77,11 +82,22 @@ body {
 	max-width: 120px;
 	height: 25px;
 	flex-grow: 1;
-	flex-basis: 0;
 }
 
-.filter-text {
+.show-text {
 	padding-right: 5px;
+}
+
+.show-img {
+	display: inline-block;
+	width: 12px;
+}
+
+
+@media screen and (min-width: 320px) {
+	.show {
+		flex-basis: 0;
+	}
 }
 
 @media screen and (min-width: 550px) {

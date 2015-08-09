@@ -94,7 +94,26 @@ var Model = {
 			'<p><a target="_blank" href="http://' + Model.locations[i].linkName + '">'
 			+ Model.locations[i].linkName + '</a></p>'
 			+ '</p>' + Model.locations[i].phone + '</p>';
-	}
+	},
+
+	showOptions: [
+		{
+			name: 'all',
+			image: null
+		},
+		{
+			name: 'food',
+			image: 'images/green-dot.png'
+		},
+		{
+			name: 'coffee',
+			image: 'images/red-dot.png'
+		},
+		{
+			name: 'drinks',
+			image: 'images/blue-dot.png'
+		}
+	]
 };
 
 
@@ -103,84 +122,25 @@ var Model = {
 var ViewModel = function() {
 	var self = this;
 
-	// make an array to hold each location object
-	self.locationsList = ko.observableArray();
-	// push each location object into the array
+	// listen to the search box for changes
+	self.query = ko.observable('');
+
+	// put show options in VM to construct it in DOM using KO
+	self.showOptionsList = [];
+	Model.showOptions.forEach(function(element) {
+		self.showOptionsList.push(element);
+	});
+
+	// put locations in VM to construct listview in DOM using KO
+	self.locationsList = [];
 	Model.locations.forEach(function(element) {
 		self.locationsList.push(element);
 	});
-
-	self.locationsListLength = self.locationsList().length;
-
-	self.filterAll = function() {
-		for (var i = 0; i < self.locationsListLength; i++) {
-
-		}
-	}
-
-	self.filterFood = function() {
-		for (var i = 0; i < self.locationsListLength; i++) {
-
-		}
-	};
-
-	self.filterCoffee = function() {
-		for (var i = 0; i < self.locationsListLength; i++) {
-
-		}
-	};
-
-	self.filterDrinks = function() {
-		for (var i = 0; i < self.locationsListLength; i++) {
-
-		}
-	};
-
-	self.query = ko.observable('');
-
-	self.search = function() {
-		var searchValue = new RegExp(self.query(), 'i');
-		var i;
-
-		self.markersList.forEach(function(element) {
-			element.setMap(self.map);
-		});
-
-		$('.list-item').show();
-
-		for (i = 0; i < self.locationsListLength; i++) {
-
-			var result = searchValue.test(self.locationsList()[i].name);
-
-			if (result === false) {
-				self.markersList[i].setMap(null);
-
-				$('#' + i).hide();
-			}
-		}
-	};
-
-	self.query.subscribe(self.search);
+	// put locations length in VM for use in search and show functions
+	self.locationsListLength = self.locationsList.length;
 
 	// make an array to hold each marker
 	self.markersList = [];
-	// link each list item to the correct info window
-	self.makeListClickable = function(index) {
-		google.maps.event.trigger(self.markersList[index()], 'click');
-	};
-
-	self.makeMarkersClickable = function(i, markerCopy, infoWindowCopy) {
-		var content;
-		// the click event handler for each marker
-		google.maps.event.addListener(markerCopy, 'click', function() {
-			// get and the right content
-			content = Model.makeInfoWindow(i);
-			// set the right content
-			infoWindowCopy.setContent(content);
-			// open the info window when clicked
-			infoWindowCopy.open(self.map, markerCopy);
-		});
-	};
 
 	// initialize the map
 	self.initialize = function() {
@@ -210,6 +170,69 @@ var ViewModel = function() {
 	// wait until the page has loaded to create the map
 	google.maps.event.addDomListener(window, 'load', this.initialize);
 
+	// link each list item to the correct info window
+	self.makeListClickable = function(index) {
+		google.maps.event.trigger(self.markersList[index()], 'click');
+	};
+
+	self.makeMarkersClickable = function(i, markerCopy, infoWindowCopy) {
+		var content;
+		// the click event handler for each marker
+		google.maps.event.addListener(markerCopy, 'click', function() {
+			// get and the right content
+			content = Model.makeInfoWindow(i);
+			// set the right content
+			infoWindowCopy.setContent(content);
+			// open the info window when clicked
+			infoWindowCopy.open(self.map, markerCopy);
+		});
+	};
+
+	self.search = function() {
+		var searchValue = new RegExp(self.query(), 'i');
+		var i;
+
+		self.markersList.forEach(function(element) {
+			element.setMap(self.map);
+		});
+
+		$('.list-item').show();
+
+		for (i = 0; i < self.locationsListLength; i++) {
+
+			var result = searchValue.test(self.locationsList[i].name);
+
+			if (result === false) {
+				self.markersList[i].setMap(null);
+
+				$('#' + i).hide();
+			}
+		}
+	};
+	// if changes in the search box, call the search function
+	self.query.subscribe(self.search);
+
+	self.show = function(name) {
+		var i;
+
+		self.markersList.forEach(function(element) {
+			element.setMap(self.map);
+		});
+
+		$('.list-item').show();
+
+		if (name !== 'all') {
+			for (i = 0; i < self.locationsListLength; i++) {
+				var result = self.locationsList[i].type;
+
+				if (result !== name) {
+					self.markersList[i].setMap(null);
+
+					$('#' + i).hide();
+				}
+			}
+		}
+	};
 };
 
 ko.applyBindings(new ViewModel());

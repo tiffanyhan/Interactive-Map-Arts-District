@@ -13,9 +13,13 @@
 			<input data-bind="value: query, valueUpdate: 'keyup'" autocomplete="on" class="search-box" placeholder="Search key locations" type="search">
 		</form>
 
-		<div class="key">
-			<span class="filter-text">Filter:  </span>
-			<button class="filter filter-all">all</button><button class="filter filter-food">food</button><button class="filter filter-coffee">coffee</button><button class="filter filter-drinks">drinks</button>
+		<div class="show-container">
+			<span data-bind="foreach: showOptionsList" class="key">
+				<button data-bind="click: function(data, event) {$parent.show(name, data, event);}" class="show">
+					<span data-bind="text: name"></span>
+					<span><img data-bind="attr: {src: $data.image}" class="show-img"></span>
+				</button>
+			</span>
 		</div>
 
 		<div id="map-canvas"></div>
