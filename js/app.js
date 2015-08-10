@@ -186,7 +186,7 @@ var ViewModel = function() {
 
 			// make any previously clicked marker stop bouncing
 			self.markersList.forEach(function(element) {
-				lement.setAnimation(null);
+				element.setAnimation(null);
 			});
 			// make the clicked marker bounce
 			markerCopy.setAnimation(google.maps.Animation.BOUNCE);
@@ -229,7 +229,7 @@ var ViewModel = function() {
 
 	// name is the category clicked by the user
 	self.show = function(name) {
-		var i result;
+		var i, result;
 		// first show all markers and list items on screen
 		self.markersList.forEach(function(element) {
 			element.setMap(self.map);
