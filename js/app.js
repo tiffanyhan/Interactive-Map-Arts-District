@@ -85,6 +85,7 @@ var Model = {
 		}
 	],
 
+	// make an info window using i passed in from VM
 	makeInfoWindow: function(i) {
 
 		return '<h1>' + Model.locations[i].name + '</h1>' +
@@ -96,6 +97,7 @@ var Model = {
 			+ '</p>' + Model.locations[i].phone + '</p>';
 	},
 
+	// list of categories to organize the locations
 	showOptions: [
 		{
 			name: 'all',
@@ -170,6 +172,7 @@ var ViewModel = function() {
 	// wait until the page has loaded to create the map
 	google.maps.event.addDomListener(window, 'load', this.initialize);
 
+	// when a marker is clicked, open an info window and animate the marker
 	self.makeMarkersClickable = function(i, markerCopy, infoWindow) {
 		var content;
 		// the click event handler for each marker
@@ -181,15 +184,16 @@ var ViewModel = function() {
 			// open the info window when clicked
 			infoWindow.open(self.map, markerCopy);
 
+			// make any previously clicked marker stop bouncing
 			self.markersList.forEach(function(element) {
-				element.setAnimation(null);
+				lement.setAnimation(null);
 			});
-
+			// make the clicked marker bounce
 			markerCopy.setAnimation(google.maps.Animation.BOUNCE);
-
-			google.maps.event.addListener(infoWindow, 'closeclick', function() {
-				markerCopy.setAnimation(null);
-			});
+		});
+		// make the marker stop bouncing when you close the info window
+		google.maps.event.addListener(infoWindow, 'closeclick', function() {
+			markerCopy.setAnimation(null);
 		});
 	};
 
@@ -200,18 +204,19 @@ var ViewModel = function() {
 
 	self.search = function() {
 		var searchValue = new RegExp(self.query(), 'i');
-		var i;
-
+		var i, result;
+		// first make all markers show on screen
 		self.markersList.forEach(function(element) {
 			element.setMap(self.map);
 		});
-
+		// and make all list items show on screen
 		$('.list-item').show();
 
 		for (i = 0; i < self.locationsListLength; i++) {
-
-			var result = searchValue.test(self.locationsList[i].name);
-
+			// test if search query matches any location names
+			result = searchValue.test(self.locationsList[i].name);
+			// if the search query does not match a location name,
+			// hide its marker and list item
 			if (result === false) {
 				self.markersList[i].setMap(null);
 
@@ -222,19 +227,22 @@ var ViewModel = function() {
 	// if changes in the search box, call the search function
 	self.query.subscribe(self.search);
 
+	// name is the category clicked by the user
 	self.show = function(name) {
-		var i;
-
+		var i result;
+		// first show all markers and list items on screen
 		self.markersList.forEach(function(element) {
 			element.setMap(self.map);
 		});
-
 		$('.list-item').show();
 
+		// if the user clicked a category instead of all
 		if (name !== 'all') {
 			for (i = 0; i < self.locationsListLength; i++) {
-				var result = self.locationsList[i].type;
-
+				// save each location's type
+				result = self.locationsList[i].type;
+				// if the location's type does not equal the category
+				// clicked, hide its marker and list item
 				if (result !== name) {
 					self.markersList[i].setMap(null);
 
