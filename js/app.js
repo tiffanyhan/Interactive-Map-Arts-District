@@ -170,22 +170,32 @@ var ViewModel = function() {
 	// wait until the page has loaded to create the map
 	google.maps.event.addDomListener(window, 'load', this.initialize);
 
-	// link each list item to the correct info window
-	self.makeListClickable = function(index) {
-		google.maps.event.trigger(self.markersList[index()], 'click');
-	};
-
-	self.makeMarkersClickable = function(i, markerCopy, infoWindowCopy) {
+	self.makeMarkersClickable = function(i, markerCopy, infoWindow) {
 		var content;
 		// the click event handler for each marker
 		google.maps.event.addListener(markerCopy, 'click', function() {
 			// get and the right content
 			content = Model.makeInfoWindow(i);
 			// set the right content
-			infoWindowCopy.setContent(content);
+			infoWindow.setContent(content);
 			// open the info window when clicked
-			infoWindowCopy.open(self.map, markerCopy);
+			infoWindow.open(self.map, markerCopy);
+
+			self.markersList.forEach(function(element) {
+				element.setAnimation(null);
+			});
+
+			markerCopy.setAnimation(google.maps.Animation.BOUNCE);
+
+			google.maps.event.addListener(infoWindow, 'closeclick', function() {
+				markerCopy.setAnimation(null);
+			});
 		});
+	};
+
+	// link each list item to the correct info window
+	self.makeListClickable = function(index) {
+		google.maps.event.trigger(self.markersList[index()], 'click');
 	};
 
 	self.search = function() {

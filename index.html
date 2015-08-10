@@ -14,8 +14,8 @@
 		</form>
 
 		<div class="show-container">
-			<span data-bind="foreach: showOptionsList" class="key">
-				<button data-bind="click: function(data, event) {$parent.show(name, data, event);}" class="show">
+			<span data-bind="foreach: showOptionsList" class="show">
+				<button data-bind="click: function(data, event) {$parent.show(name, data, event);}" class="show-item">
 					<span data-bind="text: name"></span>
 					<span><img data-bind="attr: {src: $data.image}" class="show-img"></span>
 				</button>
