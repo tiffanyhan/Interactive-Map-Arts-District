@@ -126,6 +126,16 @@ var ViewModel = function() {
 
 	// listen to the search box for changes
 	self.query = ko.observable('');
+	// prevent form from submitting when user presses enter key
+	$(document).on('keypress', 'form', function(e) {
+		var code = e.keyCode || e.which;
+
+		if (code === 13) {
+			e.preventDefault();
+
+			return false;
+		}
+	});
 
 	// put show options in VM to construct it in DOM using KO
 	self.showOptionsList = [];
