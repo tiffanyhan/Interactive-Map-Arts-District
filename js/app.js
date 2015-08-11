@@ -155,9 +155,9 @@ var Model = {
 					' | ' + '<span>' + '<strong>' + dataObj.likes.count + '</strong>' + ' likes' + '</span>' + '<br>' +
 					'<p class="line-height category">' + dataObj.categories[0].name + '</p>' +
 
-					'<p class="line-height">' + dataObj.tips.groups[0].items[0].text + '</p>' +
-					'<p class="line-height">' + dataObj.tips.groups[0].items[1].text + '</p>' +
-					'<p class="line-height">' + dataObj.tips.groups[0].items[2].text + '</p>'
+					'<p class="line-height">' + '<strong>' + 'Tip 1:  ' + '</strong>' + dataObj.tips.groups[0].items[0].text + '</p>' +
+					'<p class="line-height">' + '<strong>' + 'Tip 2:  ' + '</strong>' + dataObj.tips.groups[0].items[1].text + '</p>' +
+					'<p class="line-height">' + '<strong>' + 'Tip 3:  ' + '</strong>' + dataObj.tips.groups[0].items[2].text + '</p>'
 				);
 			}
 		});
