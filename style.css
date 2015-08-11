@@ -105,13 +105,18 @@ body {
 	color: blue;
 }
 
-.tips {
+.line-height {
 	line-height: 1.4em;
 }
 
 .hours {
 	font-size: .9em;
 	padding-top: 5px;
+}
+
+.category {
+	margin-top: 8px;
+	color: gray;
 }
 
 

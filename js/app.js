@@ -148,12 +148,16 @@ var Model = {
 					'<span><a target="_blank" href="' + dataObj.url + '">' + 'Website' + '</a></span>' +
 					' | ' + '<span>' + dataObj.contact.formattedPhone + '</span>' +
 					'<p class="hours">' + dataObj.hours.status + ' today' + '</p>' +
+
 					'<hr>' + '<br>' +
+
 					'<span>' + '<strong class="rating green-text">' + dataObj.rating + '</strong>' + '/10 rating' + '</span>' +
-					' | ' + '<span>' + '<strong>' + dataObj.likes.count + '</strong>' + ' likes' + '</span>' +
-					'<p class="tips">' + dataObj.tips.groups[0].items[0].text + '</p>' +
-					'<p class="tips">' + dataObj.tips.groups[0].items[1].text + '</p>' +
-					'<p class="tips">' + dataObj.tips.groups[0].items[2].text + '</p>'
+					' | ' + '<span>' + '<strong>' + dataObj.likes.count + '</strong>' + ' likes' + '</span>' + '<br>' +
+					'<p class="line-height category">' + dataObj.categories[0].name + '</p>' +
+
+					'<p class="line-height">' + dataObj.tips.groups[0].items[0].text + '</p>' +
+					'<p class="line-height">' + dataObj.tips.groups[0].items[1].text + '</p>' +
+					'<p class="line-height">' + dataObj.tips.groups[0].items[2].text + '</p>'
 				);
 			}
 		});
