@@ -93,6 +93,18 @@ body {
 	width: 12px;
 }
 
+.rating {
+	font-size: 1.3em;
+}
+
+.green-text {
+	color: green;
+}
+
+.tips {
+	line-height: 1.4em;
+}
+
 
 @media screen and (min-width: 320px) {
 	.show {

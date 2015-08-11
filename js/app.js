@@ -93,9 +93,11 @@ var Model = {
 	],
 
 	// make an info window using i passed in from VM
-	makeInfoWindow: function(i) {
+	/*
+	makeInfoWindow: function(i, infoWindow) {
 
-		Model.requestFourSquare(i);
+		Model.requestFourSquare(i, infoWindow);
+
 
 		return '<h1>' + Model.locations[i].name + '</h1>' +
 			'<p>' + Model.locations[i].street + '</p>' +
@@ -105,6 +107,7 @@ var Model = {
 			+ Model.locations[i].linkName + '</a></p>'
 			+ '</p>' + Model.locations[i].phone + '</p>';
 	},
+	*/
 
 	fourSquareInfo: {
 		clientID: 'AQCNP0VHT3VAKMLMIUH2OQHNP2XHXOWYFSYEJNJ0RSKR1JHA',
@@ -112,7 +115,8 @@ var Model = {
 		version: 20130815
 	},
 
-	requestFourSquare: function(i) {
+
+	makeInfoWindow: function(i, infoWindow) {
 
 		/*
 			var oldbaseURL = 'https://api.foursquare.com/v2/venues/search?client_id=' +
@@ -126,18 +130,30 @@ var Model = {
 		var venueID = Model.locations[i].fourSquareID;
 
 		var fullURL = 'https://api.foursquare.com/v2/venues/' +
-			venueID +'?client_id=' +
+			venueID + '?client_id=' +
 			Model.fourSquareInfo.clientID + '&client_secret=' +
 			Model.fourSquareInfo.clientSecret + '&v=' +
 			Model.fourSquareInfo.version;
-
-		console.log(fullURL);
 
 		$.ajax(fullURL, {
 			dataType: 'jsonp',
 			success: function(data) {
 				var dataObj = data.response.venue;
 				console.log(dataObj);
+
+				infoWindow.setContent(
+					'<h1>' + dataObj.name + '</h1>' +
+					'<p>' + dataObj.location.address + '</p>' +
+					'<p>' + dataObj.location.formattedAddress[1] + '</p>' +
+					'<span><a target="_blank" href="' + dataObj.url + '">' + 'Website' + '</a></span>' +
+					' | ' + '<span>' + dataObj.contact.formattedPhone + '</span>' +
+					'<br>' + '<hr>' + '<br>' +
+					'<span>' + '<strong class="rating green-text">' + dataObj.rating + '</strong>' + '/10 rating' + '</span>' +
+					' | ' + '<span>' + '<strong>' + dataObj.likes.count + '</strong>' + ' likes' + '</span>' +
+					'<p class="tips">' + dataObj.tips.groups[0].items[0].text + '</p>' +
+					'<p class="tips">' + dataObj.tips.groups[0].items[1].text + '</p>' +
+					'<p class="tips">' + dataObj.tips.groups[0].items[2].text + '</p>'
+				);
 			}
 		});
 	},
@@ -199,7 +215,9 @@ var ViewModel = function() {
 		var locationsLength = Model.locations.length;
 		var i, marker, location, addClickEvent;
 		// make one info window
-		var infoWindow = new google.maps.InfoWindow();
+		self.infoWindow = new google.maps.InfoWindow({
+			maxWidth: 300
+		});
 		// for loop makes markers with info windows
 		for (i = 0; i < locationsLength; i++) {
 			// make markers
@@ -211,23 +229,25 @@ var ViewModel = function() {
 			// add each marker to an array
 			self.markersList.push(marker);
 			// add info windows
-			self.makeMarkersClickable(i, marker, infoWindow);
+			self.makeMarkersClickable(i, marker);
 		}
 	};
 	// wait until the page has loaded to create the map
 	google.maps.event.addDomListener(window, 'load', this.initialize);
 
 	// when a marker is clicked, open an info window and animate the marker
-	self.makeMarkersClickable = function(i, markerCopy, infoWindow) {
+	self.makeMarkersClickable = function(i, markerCopy) {
 		var content;
 		// the click event handler for each marker
 		google.maps.event.addListener(markerCopy, 'click', function() {
+			var infoWindow = self.infoWindow;
 			// get and the right content
-			content = Model.makeInfoWindow(i);
+			//content = Model.makeInfoWindow(i, infoWindow);
+			Model.makeInfoWindow(i, infoWindow);
 			// set the right content
-			infoWindow.setContent(content);
+			// self.infoWindow.setContent(content);
 			// open the info window when clicked
-			infoWindow.open(self.map, markerCopy);
+			self.infoWindow.open(self.map, markerCopy);
 
 			// make any previously clicked marker stop bouncing
 			self.markersList.forEach(function(element) {
@@ -237,7 +257,7 @@ var ViewModel = function() {
 			markerCopy.setAnimation(google.maps.Animation.BOUNCE);
 		});
 		// make the marker stop bouncing when you close the info window
-		google.maps.event.addListener(infoWindow, 'closeclick', function() {
+		google.maps.event.addListener(self.infoWindow, 'closeclick', function() {
 			markerCopy.setAnimation(null);
 		});
 	};
@@ -275,6 +295,9 @@ var ViewModel = function() {
 	// name is the category clicked by the user
 	self.show = function(name) {
 		var i, result;
+
+		google.maps.event.trigger(self.infoWindow, 'closeclick');
+
 		// first show all markers and list items on screen
 		self.markersList.forEach(function(element) {
 			element.setMap(self.map);
