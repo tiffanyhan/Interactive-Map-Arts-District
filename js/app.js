@@ -88,7 +88,7 @@ var Model = {
 	},
 	*/
 
-	infoWindowContent: '',
+	infoWindowContent: null,
 
 	fourSquareInfo: {
 		clientID: 'AQCNP0VHT3VAKMLMIUH2OQHNP2XHXOWYFSYEJNJ0RSKR1JHA',
@@ -288,8 +288,11 @@ var ViewModel = function() {
 	self.search = function() {
 		var searchValue = new RegExp(self.query(), 'i');
 		var i, result;
+
+		self.infoWindow.close();
 		// first make all markers show on screen
 		self.markersList.forEach(function(element) {
+			element.setAnimation(null);
 			element.setMap(self.map);
 		});
 		// and make all list items show on screen
@@ -313,10 +316,11 @@ var ViewModel = function() {
 	// name is the category clicked by the user
 	self.show = function(name) {
 		var i, result;
-		// close any open info windows when user clicks any category
+
 		self.infoWindow.close();
 		// first show all markers and list items on screen
 		self.markersList.forEach(function(element) {
+			element.setAnimation(null);
 			element.setMap(self.map);
 		});
 		$('.list-item').show();
@@ -337,7 +341,6 @@ var ViewModel = function() {
 		}
 	};
 
-
 	// prevent form from submitting when user presses enter key
 	$(document).on('keypress', 'form', function(e) {
 		var code = e.keyCode || e.which;
@@ -350,5 +353,7 @@ var ViewModel = function() {
 	});
 };
 
+// allows us to reference our instance of the ViewModel
 var myViewModel = new ViewModel();
+
 ko.applyBindings(myViewModel);
