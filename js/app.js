@@ -23,9 +23,6 @@ var Model = {
 		{
 			coordinates: {lat: 34.045600, lng: -118.236063},
 			name: 'Wurstkuche',
-			street: '800 E 3rd St',
-			linkName: 'wurstkuche.com',
-			phone: '(213) 687-4444',
 			icon: 'images/green-dot.png',
 			type: 'food',
 			fourSquareID: '49b064dcf964a520bc521fe3'
@@ -33,9 +30,6 @@ var Model = {
 		{
 			coordinates: {lat: 34.041979, lng: -118.235406},
 			name: 'Urth Caffe',
-			street: '451 S Hewitt St',
-			linkName: 'urthcaffe.com',
-			phone: '(213) 797-4534',
 			icon: 'images/red-dot.png',
 			type: 'coffee',
 			fourSquareID: '4a33da8ef964a520559b1fe3'
@@ -43,9 +37,6 @@ var Model = {
 		{
 			coordinates: {lat: 34.045406, lng: -118.237441},
 			name: 'EightyTwo',
-			street: '707 E 4th Pl',
-			linkName: 'eightytwo.la',
-			phone: '(213) 626-8200',
 			icon: 'images/blue-dot.png',
 			type: 'fun',
 			fourSquareID: '5245b6610493d5f1808093cf'
@@ -53,9 +44,6 @@ var Model = {
 		{
 			coordinates: {lat: 34.045161, lng: -118.238748},
 			name: 'X Lanes',
-			street: '333 Alameda St #300',
-			linkName: 'xlanesla.com',
-			phone: '(213) 229-8910',
 			icon: 'images/blue-dot.png',
 			type: 'fun',
 			fourSquareID: '516ecb46e4b0cc56cde5c6e3'
@@ -63,9 +51,6 @@ var Model = {
 		{
 			coordinates: {lat: 34.046143, lng: -118.234074},
 			name: 'Eat Drink Americano',
-			street: '923 E 3rd St #101',
-			linkName: 'eatdrinkamericano.com',
-			phone: '(213) 620-0781',
 			icon: 'images/red-dot.png',
 			type: 'coffee',
 			fourSquareID: '4fb9b117e4b05cad1ca73407'
@@ -73,9 +58,6 @@ var Model = {
 		{
 			coordinates: {lat: 34.045414, lng: -118.236251},
 			name: 'The Pie Hole',
-			street: '714 Traction Ave',
-			linkName: 'thepieholela.com',
-			phone: '(213) 537-0115',
 			icon: 'images/green-dot.png',
 			type: 'food',
 			fourSquareID: '4e992c725c5caa2f44ec6955'
@@ -83,9 +65,6 @@ var Model = {
 		{
 			coordinates: {lat: 34.045279, lng: -118.238533},
 			name: 'Shojin',
-			street: '333 Alameda St #310',
-			linkName: 'theshojin.com',
-			phone: '(213) 617-0305',
 			icon: 'images/green-dot.png',
 			type: 'food',
 			fourSquareID: '4a4c2e89f964a5201cad1fe3'
@@ -109,6 +88,8 @@ var Model = {
 	},
 	*/
 
+	infoWindowContent: '',
+
 	fourSquareInfo: {
 		clientID: 'AQCNP0VHT3VAKMLMIUH2OQHNP2XHXOWYFSYEJNJ0RSKR1JHA',
 		clientSecret: 'VGTBLMPURRGIG4NSSIATQTTEUWKSWPWVKOHNDCECXCDVCEJB',
@@ -116,7 +97,7 @@ var Model = {
 	},
 
 
-	makeInfoWindow: function(i, infoWindow) {
+	makeInfoWindow: function(i) {
 
 		/*
 			var oldbaseURL = 'https://api.foursquare.com/v2/venues/search?client_id=' +
@@ -128,27 +109,29 @@ var Model = {
 		*/
 
 		var venueID = Model.locations[i].fourSquareID;
-
+		var fourSquare = Model.fourSquareInfo;
+		// construct URL to make ajax request to
 		var fullURL = 'https://api.foursquare.com/v2/venues/' +
 			venueID + '?client_id=' +
-			Model.fourSquareInfo.clientID + '&client_secret=' +
-			Model.fourSquareInfo.clientSecret + '&v=' +
-			Model.fourSquareInfo.version;
-
+			fourSquare.clientID + '&client_secret=' +
+			fourSquare.clientSecret + '&v=' +
+			fourSquare.version;
+		// make asychronous ajax request
 		$.ajax(fullURL, {
 			dataType: 'jsonp',
 			success: function(data) {
 				var dataObj = data.response.venue;
 				console.log(dataObj);
 
+				var location = dataObj.location;
 				var firstPhoto = dataObj.bestPhoto;
 				var secondPhoto = dataObj.photos.groups[0].items[1];
 				var tips = dataObj.tips.groups[0].items;
 
-				infoWindow.setContent(
-					'<h1>' + dataObj.name + '</h1>' +
-					'<p>' + dataObj.location.address + '</p>' +
-					'<p>' + dataObj.location.formattedAddress[1] + '</p>' +
+				Object.defineProperty(Model, 'infoWindowContent', {
+					value: '<h1>' + dataObj.name + '</h1>' +
+					'<p>' + location.address + '</p>' +
+					'<p>' + location.formattedAddress[1] + '</p>' +
 					'<a target="_blank" href="' + dataObj.url + '">' + 'Website' + '</a>' +
 					' | ' + '<span>' + dataObj.contact.formattedPhone + '</span>' +
 					'<p class="hours">' + dataObj.hours.status + ' today' + '</p>' +
@@ -168,7 +151,7 @@ var Model = {
 						'<img class="second-photo" src="' + secondPhoto.prefix + '125x125' + secondPhoto.suffix + '">' +
 					'</a>' +
 
-					'<a class="plain-link" href="' + dataObj.canonicalUrl + '"' + 'ref="' + Model.fourSquareInfo.clientID +'"' + '>' +
+					'<a class="plain-link" href="' + dataObj.canonicalUrl + '"' + 'ref="' + fourSquare.clientID +'"' + '>' +
 						'<p class="line-height">' +
 							'<strong>' + 'Tip 1:  ' + '</strong>' + tips[0].text +
 						'</p>' +
@@ -181,7 +164,7 @@ var Model = {
 					'</a>' + '<br>' +
 
 					'<a href="http://foursquare.com">' + '<img src="images/foursquare.png">' + '</p>' + '</a>'
-				);
+				});
 			}
 		});
 	},
@@ -265,17 +248,17 @@ var ViewModel = function() {
 
 	// when a marker is clicked, open an info window and animate the marker
 	self.makeMarkersClickable = function(i, markerCopy) {
-		var content;
+		var infoWindow;
 		// the click event handler for each marker
 		google.maps.event.addListener(markerCopy, 'click', function() {
-			var infoWindow = self.infoWindow;
+			infoWindow = self.infoWindow;
 			// get and the right content
 			//content = Model.makeInfoWindow(i, infoWindow);
-			Model.makeInfoWindow(i, infoWindow);
+			Model.makeInfoWindow(i);
 			// set the right content
-			// self.infoWindow.setContent(content);
+			infoWindow.setContent(Model.infoWindowContent);
 			// open the info window when clicked
-			self.infoWindow.open(self.map, markerCopy);
+			infoWindow.open(self.map, markerCopy);
 
 			// make any previously clicked marker stop bouncing
 			self.markersList.forEach(function(element) {
