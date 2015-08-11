@@ -141,6 +141,10 @@ var Model = {
 				var dataObj = data.response.venue;
 				console.log(dataObj);
 
+				var firstPhoto = dataObj.bestPhoto;
+				var secondPhoto = dataObj.photos.groups[0].items[1];
+				var tips = dataObj.tips.groups[0].items;
+
 				infoWindow.setContent(
 					'<h1>' + dataObj.name + '</h1>' +
 					'<p>' + dataObj.location.address + '</p>' +
@@ -157,26 +161,26 @@ var Model = {
 					'</p>' +
 					'<p class="line-height category">' + dataObj.categories[0].name + '</p>' +
 
-					'<img class="best-photo" src="' + dataObj.bestPhoto.prefix + '125x125' + dataObj.bestPhoto.suffix + '">' +
-					'<img class="second-photo" src="' + dataObj.photos.groups[0].items[1].prefix + '125x125' + dataObj.photos.groups[0].items[1].suffix + '">' +
+					'<a href="' + firstPhoto.prefix + 'original' + firstPhoto.suffix + '">' +
+						'<img class="best-photo" src="' + firstPhoto.prefix + '125x125' + firstPhoto.suffix + '">' +
+					'</a>' +
+					'<a href="' + secondPhoto.prefix + 'original' + secondPhoto.suffix + '">' +
+						'<img class="second-photo" src="' + secondPhoto.prefix + '125x125' + secondPhoto.suffix + '">' +
+					'</a>' +
 
-					'<a class="plain-link" href="' + dataObj.canonicalUrl + '">' +
+					'<a class="plain-link" href="' + dataObj.canonicalUrl + '"' + 'ref="' + Model.fourSquareInfo.clientID +'"' + '>' +
 						'<p class="line-height">' +
-							'<strong>' + 'Tip 1:  ' + '</strong>' + dataObj.tips.groups[0].items[0].text +
+							'<strong>' + 'Tip 1:  ' + '</strong>' + tips[0].text +
 						'</p>' +
-					'</a>' +
-					'<a class="plain-link" href="' + dataObj.canonicalUrl + '">' +
 						'<p class="line-height">' +
-							'<strong>' + 'Tip 2:  ' + '</strong>' + dataObj.tips.groups[0].items[1].text +
+							'<strong>' + 'Tip 2:  ' + '</strong>' + tips[1].text +
 						'</p>' +
-					'</a>' +
-					'<a class="plain-link" href="' + dataObj.canonicalUrl + '">' +
 						'<p class="line-height">' +
-							'<strong>' + 'Tip 3:  ' + '</strong>' + dataObj.tips.groups[0].items[2].text +
+							'<strong>' + 'Tip 3:  ' + '</strong>' + tips[2].text +
 						'</p>' +
 					'</a>' + '<br>' +
 
-					'<a href="' + dataObj.canonicalUrl + '">' + '<img src="images/foursquare.png">' + '</p>' + '</a>'
+					'<a href="http://foursquare.com">' + '<img src="images/foursquare.png">' + '</p>' + '</a>'
 				);
 			}
 		});
