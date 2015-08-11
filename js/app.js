@@ -27,7 +27,8 @@ var Model = {
 			linkName: 'wurstkuche.com',
 			phone: '(213) 687-4444',
 			icon: 'images/green-dot.png',
-			type: 'food'
+			type: 'food',
+			fourSquareID: '49b064dcf964a520bc521fe3'
 		},
 		{
 			coordinates: {lat: 34.041979, lng: -118.235406},
@@ -36,7 +37,8 @@ var Model = {
 			linkName: 'urthcaffe.com',
 			phone: '(213) 797-4534',
 			icon: 'images/red-dot.png',
-			type: 'coffee'
+			type: 'coffee',
+			fourSquareID: '4a33da8ef964a520559b1fe3'
 		},
 		{
 			coordinates: {lat: 34.045406, lng: -118.237441},
@@ -45,7 +47,8 @@ var Model = {
 			linkName: 'eightytwo.la',
 			phone: '(213) 626-8200',
 			icon: 'images/blue-dot.png',
-			type: 'drinks'
+			type: 'drinks',
+			fourSquareID: '5245b6610493d5f1808093cf'
 		},
 		{
 			coordinates: {lat: 34.045161, lng: -118.238748},
@@ -54,7 +57,8 @@ var Model = {
 			linkName: 'xlanesla.com',
 			phone: '(213) 229-8910',
 			icon: 'images/blue-dot.png',
-			type: 'drinks'
+			type: 'drinks',
+			fourSquareID: '516ecb46e4b0cc56cde5c6e3'
 		},
 		{
 			coordinates: {lat: 34.046143, lng: -118.234074},
@@ -63,7 +67,8 @@ var Model = {
 			linkName: 'eatdrinkamericano.com',
 			phone: '(213) 620-0781',
 			icon: 'images/red-dot.png',
-			type: 'coffee'
+			type: 'coffee',
+			fourSquareID: '4fb9b117e4b05cad1ca73407'
 		},
 		{
 			coordinates: {lat: 34.045414, lng: -118.236251},
@@ -72,7 +77,8 @@ var Model = {
 			linkName: 'thepieholela.com',
 			phone: '(213) 537-0115',
 			icon: 'images/green-dot.png',
-			type: 'food'
+			type: 'food',
+			fourSquareID: '4e992c725c5caa2f44ec6955'
 		},
 		{
 			coordinates: {lat: 34.045279, lng: -118.238533},
@@ -81,12 +87,15 @@ var Model = {
 			linkName: 'theshojin.com',
 			phone: '(213) 617-0305',
 			icon: 'images/green-dot.png',
-			type: 'food'
+			type: 'food',
+			fourSquareID: '4a4c2e89f964a5201cad1fe3'
 		}
 	],
 
 	// make an info window using i passed in from VM
 	makeInfoWindow: function(i) {
+
+		Model.requestFourSquare(i);
 
 		return '<h1>' + Model.locations[i].name + '</h1>' +
 			'<p>' + Model.locations[i].street + '</p>' +
@@ -95,6 +104,42 @@ var Model = {
 			'<p><a target="_blank" href="http://' + Model.locations[i].linkName + '">'
 			+ Model.locations[i].linkName + '</a></p>'
 			+ '</p>' + Model.locations[i].phone + '</p>';
+	},
+
+	fourSquareInfo: {
+		clientID: 'AQCNP0VHT3VAKMLMIUH2OQHNP2XHXOWYFSYEJNJ0RSKR1JHA',
+		clientSecret: 'VGTBLMPURRGIG4NSSIATQTTEUWKSWPWVKOHNDCECXCDVCEJB',
+		version: 20130815
+	},
+
+	requestFourSquare: function(i) {
+
+		/*
+			var oldbaseURL = 'https://api.foursquare.com/v2/venues/search?client_id=' +
+			Model.fourSquareInfo.clientID + '&client_secret=' +
+			Model.fourSquareInfo.clientSecret + '&v=' +
+			Model.fourSquareInfo.version + '&ll=' +
+			Model.mapOptions.center.lat + ',' +
+			Model.mapOptions.center.lng + '&query=';
+		*/
+
+		var venueID = Model.locations[i].fourSquareID;
+
+		var fullURL = 'https://api.foursquare.com/v2/venues/' +
+			venueID +'?client_id=' +
+			Model.fourSquareInfo.clientID + '&client_secret=' +
+			Model.fourSquareInfo.clientSecret + '&v=' +
+			Model.fourSquareInfo.version;
+
+		console.log(fullURL);
+
+		$.ajax(fullURL, {
+			dataType: 'jsonp',
+			success: function(data) {
+				var dataObj = data.response.venue;
+				console.log(dataObj);
+			}
+		});
 	},
 
 	// list of categories to organize the locations
@@ -126,16 +171,6 @@ var ViewModel = function() {
 
 	// listen to the search box for changes
 	self.query = ko.observable('');
-	// prevent form from submitting when user presses enter key
-	$(document).on('keypress', 'form', function(e) {
-		var code = e.keyCode || e.which;
-
-		if (code === 13) {
-			e.preventDefault();
-
-			return false;
-		}
-	});
 
 	// put show options in VM to construct it in DOM using KO
 	self.showOptionsList = [];
@@ -261,6 +296,18 @@ var ViewModel = function() {
 			}
 		}
 	};
+
+
+	// prevent form from submitting when user presses enter key
+	$(document).on('keypress', 'form', function(e) {
+		var code = e.keyCode || e.which;
+
+		if (code === 13) {
+			e.preventDefault();
+
+			return false;
+		}
+	});
 };
 
 ko.applyBindings(new ViewModel());
