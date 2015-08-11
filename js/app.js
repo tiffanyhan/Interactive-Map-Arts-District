@@ -47,7 +47,7 @@ var Model = {
 			linkName: 'eightytwo.la',
 			phone: '(213) 626-8200',
 			icon: 'images/blue-dot.png',
-			type: 'drinks',
+			type: 'fun',
 			fourSquareID: '5245b6610493d5f1808093cf'
 		},
 		{
@@ -57,7 +57,7 @@ var Model = {
 			linkName: 'xlanesla.com',
 			phone: '(213) 229-8910',
 			icon: 'images/blue-dot.png',
-			type: 'drinks',
+			type: 'fun',
 			fourSquareID: '516ecb46e4b0cc56cde5c6e3'
 		},
 		{
@@ -178,7 +178,7 @@ var Model = {
 			image: 'images/red-dot.png'
 		},
 		{
-			name: 'drinks',
+			name: 'fun',
 			image: 'images/blue-dot.png'
 		}
 	]
