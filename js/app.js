@@ -145,7 +145,7 @@ var Model = {
 					'<h1>' + dataObj.name + '</h1>' +
 					'<p>' + dataObj.location.address + '</p>' +
 					'<p>' + dataObj.location.formattedAddress[1] + '</p>' +
-					'<span><a target="_blank" href="' + dataObj.url + '">' + 'Website' + '</a></span>' +
+					'<a target="_blank" href="' + dataObj.url + '">' + 'Website' + '</a>' +
 					' | ' + '<span>' + dataObj.contact.formattedPhone + '</span>' +
 					'<p class="hours">' + dataObj.hours.status + ' today' + '</p>' +
 
@@ -155,9 +155,21 @@ var Model = {
 					' | ' + '<span>' + '<strong>' + dataObj.likes.count + '</strong>' + ' likes' + '</span>' + '<br>' +
 					'<p class="line-height category">' + dataObj.categories[0].name + '</p>' +
 
-					'<p class="line-height">' + '<strong>' + 'Tip 1:  ' + '</strong>' + dataObj.tips.groups[0].items[0].text + '</p>' +
-					'<p class="line-height">' + '<strong>' + 'Tip 2:  ' + '</strong>' + dataObj.tips.groups[0].items[1].text + '</p>' +
-					'<p class="line-height">' + '<strong>' + 'Tip 3:  ' + '</strong>' + dataObj.tips.groups[0].items[2].text + '</p>'
+					'<a class="plain-link" href="' + dataObj.canonicalUrl + '">' +
+						'<p class="line-height">' +
+							'<strong>' + 'Tip 1:  ' + '</strong>' + dataObj.tips.groups[0].items[0].text +
+						'</p>' +
+					'</a>' +
+					'<a class="plain-link" href="' + dataObj.canonicalUrl + '">' +
+						'<p class="line-height">' +
+							'<strong>' + 'Tip 2:  ' + '</strong>' + dataObj.tips.groups[0].items[1].text +
+						'</p>' +
+					'</a>' +
+					'<a class="plain-link" href="' + dataObj.canonicalUrl + '">' +
+						'<p class="line-height">' +
+							'<strong>' + 'Tip 3:  ' + '</strong>' + dataObj.tips.groups[0].items[2].text +
+						'</p>' +
+					'</a>'
 				);
 			}
 		});
