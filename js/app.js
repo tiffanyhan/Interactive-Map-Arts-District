@@ -147,7 +147,8 @@ var Model = {
 					'<p>' + dataObj.location.formattedAddress[1] + '</p>' +
 					'<span><a target="_blank" href="' + dataObj.url + '">' + 'Website' + '</a></span>' +
 					' | ' + '<span>' + dataObj.contact.formattedPhone + '</span>' +
-					'<br>' + '<hr>' + '<br>' +
+					'<p class="hours">' + dataObj.hours.status + ' today' + '</p>' +
+					'<hr>' + '<br>' +
 					'<span>' + '<strong class="rating green-text">' + dataObj.rating + '</strong>' + '/10 rating' + '</span>' +
 					' | ' + '<span>' + '<strong>' + dataObj.likes.count + '</strong>' + ' likes' + '</span>' +
 					'<p class="tips">' + dataObj.tips.groups[0].items[0].text + '</p>' +
