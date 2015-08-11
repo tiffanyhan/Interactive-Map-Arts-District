@@ -115,13 +115,22 @@ body {
 }
 
 .category {
-	margin-top: 8px;
+	margin-top: 5px;
 	color: gray;
 }
 
 .plain-link {
 	color: black;
 	text-decoration: none;
+}
+
+.best-photo {
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+.second-photo {
+	margin-bottom: 5px;
 }
 
 

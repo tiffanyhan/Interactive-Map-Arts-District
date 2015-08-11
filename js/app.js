@@ -149,11 +149,16 @@ var Model = {
 					' | ' + '<span>' + dataObj.contact.formattedPhone + '</span>' +
 					'<p class="hours">' + dataObj.hours.status + ' today' + '</p>' +
 
-					'<hr>' + '<br>' +
+					'<hr>' +
 
-					'<span>' + '<strong class="rating green-text">' + dataObj.rating + '</strong>' + '/10 rating' + '</span>' +
-					' | ' + '<span>' + '<strong>' + dataObj.likes.count + '</strong>' + ' likes' + '</span>' + '<br>' +
+					'<p>' +
+						'<span>' + '<strong class="rating green-text">' + dataObj.rating + '</strong>' + '/10 rating' + '</span>' +
+					' | ' + '<span>' + '<strong>' + dataObj.likes.count + '</strong>' + ' likes' + '</span>' +
+					'</p>' +
 					'<p class="line-height category">' + dataObj.categories[0].name + '</p>' +
+
+					'<img class="best-photo" src="' + dataObj.bestPhoto.prefix + '125x125' + dataObj.bestPhoto.suffix + '">' +
+					'<img class="second-photo" src="' + dataObj.photos.groups[0].items[1].prefix + '125x125' + dataObj.photos.groups[0].items[1].suffix + '">' +
 
 					'<a class="plain-link" href="' + dataObj.canonicalUrl + '">' +
 						'<p class="line-height">' +
@@ -169,7 +174,9 @@ var Model = {
 						'<p class="line-height">' +
 							'<strong>' + 'Tip 3:  ' + '</strong>' + dataObj.tips.groups[0].items[2].text +
 						'</p>' +
-					'</a>'
+					'</a>' + '<br>' +
+
+					'<a href="' + dataObj.canonicalUrl + '">' + '<img src="images/foursquare.png">' + '</p>' + '</a>'
 				);
 			}
 		});
