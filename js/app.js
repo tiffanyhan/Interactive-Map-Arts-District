@@ -97,7 +97,7 @@ var Model = {
 	},
 
 
-	makeInfoWindow: function(i) {
+	makeInfoWindow: function(i, markerCopy) {
 
 		/*
 			var oldbaseURL = 'https://api.foursquare.com/v2/venues/search?client_id=' +
@@ -165,6 +165,8 @@ var Model = {
 
 					'<a href="http://foursquare.com">' + '<img src="images/foursquare.png">' + '</p>' + '</a>'
 				});
+
+				myViewModel.openInfoWindow(markerCopy);
 			}
 		});
 	},
@@ -240,34 +242,39 @@ var ViewModel = function() {
 			// add each marker to an array
 			self.markersList.push(marker);
 			// add info windows
-			self.makeMarkersClickable(i, marker);
+			self.makeInfoWindow(i, marker);
 		}
 	};
 	// wait until the page has loaded to create the map
 	google.maps.event.addDomListener(window, 'load', this.initialize);
 
 	// when a marker is clicked, open an info window and animate the marker
-	self.makeMarkersClickable = function(i, markerCopy) {
-		var infoWindow;
+	self.makeInfoWindow = function(i, markerCopy) {
 		// the click event handler for each marker
 		google.maps.event.addListener(markerCopy, 'click', function() {
-			infoWindow = self.infoWindow;
-			// get and the right content
-			//content = Model.makeInfoWindow(i, infoWindow);
-			Model.makeInfoWindow(i);
-			// set the right content
-			infoWindow.setContent(Model.infoWindowContent);
-			// open the info window when clicked
-			infoWindow.open(self.map, markerCopy);
-
-			// make any previously clicked marker stop bouncing
-			self.markersList.forEach(function(element) {
-				element.setAnimation(null);
-			});
-			// make the clicked marker bounce
-			markerCopy.setAnimation(google.maps.Animation.BOUNCE);
+			// model constructs info window content for each location
+			Model.makeInfoWindow(i, markerCopy);
 		});
-		// make the marker stop bouncing when you close the info window
+	};
+
+	self.openInfoWindow = function(markerCopy) {
+		var infoWindow = self.infoWindow;
+		// set the right content
+		infoWindow.setContent(Model.infoWindowContent);
+		// open the info window when clicked
+		infoWindow.open(self.map, markerCopy);
+
+		self.animateMarkers(markerCopy);
+	};
+
+	self.animateMarkers = function(markerCopy) {
+		// make any previously clicked marker stop bouncing
+		self.markersList.forEach(function(element) {
+			element.setAnimation(null);
+		});
+		// make the clicked marker bounce
+		markerCopy.setAnimation(google.maps.Animation.BOUNCE);
+		// stop bouncing the marker when you close the info window
 		google.maps.event.addListener(self.infoWindow, 'closeclick', function() {
 			markerCopy.setAnimation(null);
 		});
@@ -343,4 +350,5 @@ var ViewModel = function() {
 	});
 };
 
-ko.applyBindings(new ViewModel());
+var myViewModel = new ViewModel();
+ko.applyBindings(myViewModel);
