@@ -295,9 +295,8 @@ var ViewModel = function() {
 	// name is the category clicked by the user
 	self.show = function(name) {
 		var i, result;
-
-		google.maps.event.trigger(self.infoWindow, 'closeclick');
-
+		// close any open info windows when user clicks any category
+		self.infoWindow.close();
 		// first show all markers and list items on screen
 		self.markersList.forEach(function(element) {
 			element.setMap(self.map);
