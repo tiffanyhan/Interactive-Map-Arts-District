@@ -2,6 +2,7 @@
 
 var Model = {
 
+	// options to set up our google map
 	mapOptions: {
 		center: {lat: 34.044174, lng: -118.236128},
 		zoom: 15,
@@ -17,8 +18,7 @@ var Model = {
 		}
 	},
 
-	cityString: 'Los Angeles, CA 90013',
-
+	// our basic location array
 	locations: [
 		{
 			name: 'Wurstkuche',
@@ -45,22 +45,28 @@ var Model = {
 			type: 'food',
 		},
 		{
-			name: 'Shojin',
+			name: 'Guerrilla Tacos',
 			type: 'food',
+		},
+		{
+			name: 'Angel City Brewery',
+			type: 'fun'
 		}
 	],
 
+	// info to make our ajax request to four square
 	fourSquareInfo: {
 		clientID: 'AQCNP0VHT3VAKMLMIUH2OQHNP2XHXOWYFSYEJNJ0RSKR1JHA',
 		clientSecret: 'VGTBLMPURRGIG4NSSIATQTTEUWKSWPWVKOHNDCECXCDVCEJB',
 		version: 20130815
 	},
 
+	// populates location data with location coordinates and foursquare venue id
 	getLocationCoordinatesAndID: function() {
-
+		// prevent repetition in constructing base URL
 		var fourSquare = Model.fourSquareInfo;
 		var mapCenter = Model.mapOptions.center;
-
+		// base URL searches for a query term near supplied coordinates
 		var baseURL = 'https://api.foursquare.com/v2/venues/search?client_id=' +
 			fourSquare.clientID + '&client_secret=' +
 			fourSquare.clientSecret + '&v=' +
@@ -68,26 +74,27 @@ var Model = {
 			mapCenter.lat + ',' +
 			mapCenter.lng + '&query=';
 
+		// define variables outside the for loop
 		var i, fullURL, dataObj, lat, lng, venueID;
 		var locations = Model.locations;
 		var locationsLength = locations.length;
-
+		// make an ajax request for each location
 		for (i = 0; i < locationsLength; i++) {
+			// make the query term a location name
 			fullURL = baseURL + locations[i].name;
 
 			$.ajax(fullURL, {
 				i: i,
 				dataType: 'jsonp',
 				success: function(data) {
+					// get all the data needed from the data object
 					dataObj = data.response.venues[0];
-
 					lat = dataObj.location.lat;
 					lng = dataObj.location.lng;
-
 					venueID = dataObj.id;
 
-					i = this.i;
-
+					i = this.i
+					// set properties of location with correct data
 					Object.defineProperties(locations[i], {
 						'coordinates' : {
 							value: {
@@ -105,8 +112,10 @@ var Model = {
 		}
 	},
 
+	// programmatically set the icon color which goes
+	// with the right location type
 	setLocationIcon: function() {
-
+		// define variables outside the for loop
 		var i, color, location, locationType;
 		var locationsLength = Model.locations.length;
 
@@ -114,6 +123,7 @@ var Model = {
 			location = Model.locations[i];
 			locationType = location.type;
 
+			// colors according to filterOptions array below
 			if (locationType === 'food')
 				color = 'green';
 			else if (locationType === 'coffee')
@@ -121,6 +131,8 @@ var Model = {
 			else if (locationType === 'fun')
 				color = 'blue';
 
+			// set icon property of location with image
+			// of the marker that is the correct color
 			Object.defineProperty(location, 'icon', {
 				value: 'images/' + color + '-dot.png'
 			});
@@ -129,29 +141,32 @@ var Model = {
 
 	infoWindowContent: null,
 
+	// sets the info window content
 	makeInfoWindow: function(i, markerCopy) {
-
+		// define variables to construct our full URL
 		var venueID = Model.locations[i].fourSquareID;
 		var fourSquare = Model.fourSquareInfo;
-		// construct URL to make ajax request to
+		// construct full URL to make ajax request to
 		var fullURL = 'https://api.foursquare.com/v2/venues/' +
 			venueID + '?client_id=' +
 			fourSquare.clientID + '&client_secret=' +
 			fourSquare.clientSecret + '&v=' +
 			fourSquare.version;
 
-		// make asychronous ajax request
+		// make asychronous ajax request to get venue details
 		$.ajax(fullURL, {
 			dataType: 'jsonp',
 			success: function(data) {
+				// our basic data object for each location
 				var dataObj = data.response.venue;
-				console.log(dataObj);
-
+				// avoid repetition in accessing our data object
 				var location = dataObj.location;
 				var firstPhoto = dataObj.bestPhoto;
 				var secondPhoto = dataObj.photos.groups[0].items[1];
 				var tips = dataObj.tips.groups[0].items;
 
+				// info window sections inclue basic information,
+				// popularity/category, photos, tips, and attribution
 				Object.defineProperty(Model, 'infoWindowContent', {
 					value: '<h1>' + dataObj.name + '</h1>' +
 					'<p>' + location.address + '</p>' +
@@ -189,14 +204,15 @@ var Model = {
 
 					'<a href="http://foursquare.com">' + '<img src="images/foursquare.png">' + '</p>' + '</a>'
 				});
-
+				// once done constructing info window content,
+				// call on VM to set info window to right marker
 				myViewModel.setUpInfoWindow(markerCopy);
 			}
 		});
 	},
 
-	// list of categories to organize the locations
-	showOptions: [
+	// categories to filter the locations
+	filterOptions: [
 		{
 			name: 'all',
 			image: null
@@ -229,9 +245,9 @@ var ViewModel = function() {
 	self.query = ko.observable('');
 
 	// put show options in VM to construct it in DOM using KO
-	self.showOptionsList = [];
-	Model.showOptions.forEach(function(element) {
-		self.showOptionsList.push(element);
+	self.filterOptionsList = [];
+	Model.filterOptions.forEach(function(element) {
+		self.filterOptionsList.push(element);
 	});
 
 	// put locations in VM to construct listview in DOM using KO

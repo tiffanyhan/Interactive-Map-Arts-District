@@ -53,12 +53,12 @@ body {
 	flex-grow: 1;
 }
 
-.show-container {
+.filter-container {
 	max-width: 500px;
 	margin: 0 auto;
 }
 
-.show {
+.filter {
 	display: -webkit-box;
 	display: -moz-box;
 	display: -ms-flexbox;
@@ -73,7 +73,7 @@ body {
 	margin: 5px;
 }
 
-.show-item {
+.filter-item {
 	margin: 0;
 	padding: 0;
 	font-size: 1em;
@@ -88,7 +88,7 @@ body {
 	padding-right: 5px;
 }
 
-.show-img {
+.filter-img {
 	display: inline-block;
 	width: 12px;
 }
