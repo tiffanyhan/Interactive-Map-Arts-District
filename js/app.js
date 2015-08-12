@@ -56,7 +56,7 @@ var Model = {
 		version: 20130815
 	},
 
-	getLocationData: function() {
+	getLocationCoordinatesAndID: function() {
 
 		var fourSquare = Model.fourSquareInfo;
 		var mapCenter = Model.mapOptions.center;
@@ -102,26 +102,29 @@ var Model = {
 					});
 				}
 			});
-
-			Model.setLocationIcon(i);
 		}
 	},
 
-	setLocationIcon: function(i) {
-		var location = Model.locations[i];
-		var locationType = location.type;
-		var color;
+	setLocationIcon: function() {
 
-		if (locationType === 'food')
-			color = 'green';
-		else if (locationType === 'coffee')
-			color = 'red';
-		else if (locationType === 'fun')
-			color = 'blue';
+		var i, color, location, locationType;
+		var locationsLength = Model.locations.length;
 
-		Object.defineProperty(location, 'icon', {
-			value: 'images/' + color + '-dot.png'
-		});
+		for (i = 0; i < locationsLength; i++) {
+			location = Model.locations[i];
+			locationType = location.type;
+
+			if (locationType === 'food')
+				color = 'green';
+			else if (locationType === 'coffee')
+				color = 'red';
+			else if (locationType === 'fun')
+				color = 'blue';
+
+			Object.defineProperty(location, 'icon', {
+				value: 'images/' + color + '-dot.png'
+			});
+		}
 	},
 
 	infoWindowContent: null,
@@ -219,7 +222,8 @@ var Model = {
 var ViewModel = function() {
 	var self = this;
 
-	Model.getLocationData();
+	Model.getLocationCoordinatesAndID();
+	Model.setLocationIcon();
 
 	// listen to the search box for changes
 	self.query = ko.observable('');
