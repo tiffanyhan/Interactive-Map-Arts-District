@@ -22,37 +22,30 @@ var Model = {
 	locations: [
 		{
 			name: 'Wurstkuche',
-			icon: 'images/green-dot.png',
 			type: 'food',
 		},
 		{
 			name: 'Urth Caffe',
-			icon: 'images/red-dot.png',
 			type: 'coffee',
 		},
 		{
 			name: 'EightyTwo',
-			icon: 'images/blue-dot.png',
 			type: 'fun',
 		},
 		{
 			name: 'X Lanes',
-			icon: 'images/blue-dot.png',
 			type: 'fun',
 		},
 		{
 			name: 'Eat Drink Americano',
-			icon: 'images/red-dot.png',
 			type: 'coffee',
 		},
 		{
 			name: 'The Pie Hole',
-			icon: 'images/green-dot.png',
 			type: 'food',
 		},
 		{
 			name: 'Shojin',
-			icon: 'images/green-dot.png',
 			type: 'food',
 		}
 	],
@@ -76,12 +69,11 @@ var Model = {
 			mapCenter.lng + '&query=';
 
 		var i, fullURL, dataObj, lat, lng, venueID;
-		var locationsLength = Model.locations.length;
 		var locations = Model.locations;
+		var locationsLength = locations.length;
 
 		for (i = 0; i < locationsLength; i++) {
 			fullURL = baseURL + locations[i].name;
-			console.log(i);
 
 			$.ajax(fullURL, {
 				i: i,
@@ -110,7 +102,26 @@ var Model = {
 					});
 				}
 			});
+
+			Model.setLocationIcon(i);
 		}
+	},
+
+	setLocationIcon: function(i) {
+		var location = Model.locations[i];
+		var locationType = location.type;
+		var color;
+
+		if (locationType === 'food')
+			color = 'green';
+		else if (locationType === 'coffee')
+			color = 'red';
+		else if (locationType === 'fun')
+			color = 'blue';
+
+		Object.defineProperty(location, 'icon', {
+			value: 'images/' + color + '-dot.png'
+		});
 	},
 
 	infoWindowContent: null,
