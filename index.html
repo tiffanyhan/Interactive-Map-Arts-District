@@ -24,7 +24,7 @@
 
 		<div id="map-canvas"></div>
 
-		<div class="list-view">
+		<div class="list-container">
 			<ul data-bind="foreach: locationsList" class="list">
 				<li data-bind="text: name, click: $parent.makeListClickable.bind($data, $index), attr: {id: $index}" class="list-item"></li>
 			</ul>

@@ -45,12 +45,12 @@ var Model = {
 			type: 'food',
 		},
 		{
-			name: 'Guerrilla Tacos',
-			type: 'food',
+			name: 'Angel City Brewery',
+			type: 'fun',
 		},
 		{
-			name: 'Angel City Brewery',
-			type: 'fun'
+			name: 'Guerilla Tacos',
+			type: 'food'
 		}
 	],
 
