@@ -1,7 +1,10 @@
+if (typeof google === 'undefined') {
+		alert('ERROR: Google maps failed to load');
+	}
+
 /* --------------------- Model Data ---------------------- */
 
 var Model = {
-
 	// options to set up our google map
 	mapOptions: {
 		center: {lat: 34.044174, lng: -118.236128},
@@ -160,6 +163,10 @@ var Model = {
 			fourSquare.clientSecret + '&v=' +
 			fourSquare.version;
 
+		var timeout = setTimeout(function() {
+			alert('ERROR: Failed to get Foursquare location data');
+		}, 5000);
+
 		// make asychronous ajax request to get venue details
 		$.ajax(fullURL, {
 			dataType: 'jsonp',
@@ -209,6 +216,8 @@ var Model = {
 
 					'<a href="http://foursquare.com">' + '<img src="images/foursquare.png">' + '</p>' + '</a>'
 				});
+
+				clearTimeout(timeout);
 				// once done constructing info window content,
 				// call on VM to set info window to right marker
 				myViewModel.setUpInfoWindow(markerCopy);
