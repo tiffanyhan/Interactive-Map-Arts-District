@@ -183,14 +183,12 @@ var Model = {
 					'</p>' +
 					'<p class="line-height category">' + dataObj.categories[0].name + '</p>' +
 
-					'<a href="' + firstPhoto.prefix + 'original' + firstPhoto.suffix + '">' +
+					'<a target="_blank" class="plain-link" href="' + dataObj.canonicalUrl + '"' + 'ref="' + fourSquare.clientID +'"' + '>' +
 						'<img class="best-photo" src="' + firstPhoto.prefix + '125x125' + firstPhoto.suffix + '">' +
-					'</a>' +
-					'<a href="' + secondPhoto.prefix + 'original' + secondPhoto.suffix + '">' +
 						'<img class="second-photo" src="' + secondPhoto.prefix + '125x125' + secondPhoto.suffix + '">' +
 					'</a>' +
 
-					'<a class="plain-link" href="' + dataObj.canonicalUrl + '"' + 'ref="' + fourSquare.clientID +'"' + '>' +
+					'<a target="_blank" class="plain-link" href="' + dataObj.canonicalUrl + '"' + 'ref="' + fourSquare.clientID +'"' + '>' +
 						'<p class="line-height">' +
 							'<strong>' + 'Tip 1:  ' + '</strong>' + tips[0].text +
 						'</p>' +
