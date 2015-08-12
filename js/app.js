@@ -78,6 +78,11 @@ var Model = {
 		var i, fullURL, dataObj, lat, lng, venueID;
 		var locations = Model.locations;
 		var locationsLength = locations.length;
+
+		var timeout = setTimeout(function() {
+			alert('ERROR: Failed to get location resources');
+		}, 5000);
+
 		// make an ajax request for each location
 		for (i = 0; i < locationsLength; i++) {
 			// make the query term a location name
@@ -107,6 +112,8 @@ var Model = {
 							value: venueID
 						}
 					});
+
+					clearTimeout(timeout);
 				}
 			});
 		}
