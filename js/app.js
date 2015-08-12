@@ -21,74 +21,41 @@ var Model = {
 
 	locations: [
 		{
-			coordinates: {lat: 34.045600, lng: -118.236063},
 			name: 'Wurstkuche',
 			icon: 'images/green-dot.png',
 			type: 'food',
-			fourSquareID: '49b064dcf964a520bc521fe3'
 		},
 		{
-			coordinates: {lat: 34.041979, lng: -118.235406},
 			name: 'Urth Caffe',
 			icon: 'images/red-dot.png',
 			type: 'coffee',
-			fourSquareID: '4a33da8ef964a520559b1fe3'
 		},
 		{
-			coordinates: {lat: 34.045406, lng: -118.237441},
 			name: 'EightyTwo',
 			icon: 'images/blue-dot.png',
 			type: 'fun',
-			fourSquareID: '5245b6610493d5f1808093cf'
 		},
 		{
-			coordinates: {lat: 34.045161, lng: -118.238748},
 			name: 'X Lanes',
 			icon: 'images/blue-dot.png',
 			type: 'fun',
-			fourSquareID: '516ecb46e4b0cc56cde5c6e3'
 		},
 		{
-			coordinates: {lat: 34.046143, lng: -118.234074},
 			name: 'Eat Drink Americano',
 			icon: 'images/red-dot.png',
 			type: 'coffee',
-			fourSquareID: '4fb9b117e4b05cad1ca73407'
 		},
 		{
-			coordinates: {lat: 34.045414, lng: -118.236251},
 			name: 'The Pie Hole',
 			icon: 'images/green-dot.png',
 			type: 'food',
-			fourSquareID: '4e992c725c5caa2f44ec6955'
 		},
 		{
-			coordinates: {lat: 34.045279, lng: -118.238533},
 			name: 'Shojin',
 			icon: 'images/green-dot.png',
 			type: 'food',
-			fourSquareID: '4a4c2e89f964a5201cad1fe3'
 		}
 	],
-
-	// make an info window using i passed in from VM
-	/*
-	makeInfoWindow: function(i, infoWindow) {
-
-		Model.requestFourSquare(i, infoWindow);
-
-
-		return '<h1>' + Model.locations[i].name + '</h1>' +
-			'<p>' + Model.locations[i].street + '</p>' +
-			'<p>' + Model.cityString + '</p>' +
-			'<br>' +
-			'<p><a target="_blank" href="http://' + Model.locations[i].linkName + '">'
-			+ Model.locations[i].linkName + '</a></p>'
-			+ '</p>' + Model.locations[i].phone + '</p>';
-	},
-	*/
-
-	infoWindowContent: null,
 
 	fourSquareInfo: {
 		clientID: 'AQCNP0VHT3VAKMLMIUH2OQHNP2XHXOWYFSYEJNJ0RSKR1JHA',
@@ -96,17 +63,59 @@ var Model = {
 		version: 20130815
 	},
 
+	getLocationData: function() {
+
+		var fourSquare = Model.fourSquareInfo;
+		var mapCenter = Model.mapOptions.center;
+
+		var baseURL = 'https://api.foursquare.com/v2/venues/search?client_id=' +
+			fourSquare.clientID + '&client_secret=' +
+			fourSquare.clientSecret + '&v=' +
+			fourSquare.version + '&ll=' +
+			mapCenter.lat + ',' +
+			mapCenter.lng + '&query=';
+
+		var i, fullURL, dataObj, lat, lng, venueID;
+		var locationsLength = Model.locations.length;
+		var locations = Model.locations;
+
+		for (i = 0; i < locationsLength; i++) {
+			fullURL = baseURL + locations[i].name;
+			console.log(i);
+
+			$.ajax(fullURL, {
+				i: i,
+				dataType: 'jsonp',
+				success: function(data) {
+					dataObj = data.response.venues[0];
+
+					lat = dataObj.location.lat;
+					lng = dataObj.location.lng;
+
+					venueID = dataObj.id;
+
+					i = this.i;
+
+					Object.defineProperties(locations[i], {
+						'coordinates' : {
+							value: {
+								lat: lat,
+								lng: lng
+							}
+						},
+
+						'fourSquareID': {
+							value: venueID
+						}
+					});
+				}
+			});
+		}
+	},
+
+	infoWindowContent: null,
 
 	makeInfoWindow: function(i, markerCopy) {
-
-		/*
-			var oldbaseURL = 'https://api.foursquare.com/v2/venues/search?client_id=' +
-			Model.fourSquareInfo.clientID + '&client_secret=' +
-			Model.fourSquareInfo.clientSecret + '&v=' +
-			Model.fourSquareInfo.version + '&ll=' +
-			Model.mapOptions.center.lat + ',' +
-			Model.mapOptions.center.lng + '&query=';
-		*/
 
 		var venueID = Model.locations[i].fourSquareID;
 		var fourSquare = Model.fourSquareInfo;
@@ -116,6 +125,7 @@ var Model = {
 			fourSquare.clientID + '&client_secret=' +
 			fourSquare.clientSecret + '&v=' +
 			fourSquare.version;
+
 		// make asychronous ajax request
 		$.ajax(fullURL, {
 			dataType: 'jsonp',
@@ -166,7 +176,7 @@ var Model = {
 					'<a href="http://foursquare.com">' + '<img src="images/foursquare.png">' + '</p>' + '</a>'
 				});
 
-				myViewModel.openInfoWindow(markerCopy);
+				myViewModel.setUpInfoWindow(markerCopy);
 			}
 		});
 	},
@@ -198,6 +208,8 @@ var Model = {
 var ViewModel = function() {
 	var self = this;
 
+	Model.getLocationData();
+
 	// listen to the search box for changes
 	self.query = ko.observable('');
 
@@ -225,8 +237,9 @@ var ViewModel = function() {
 		self.map = new google.maps.Map(mapCanvas, Model.mapOptions);
 
 		// declare variables outside of the loop
-		var locationsLength = Model.locations.length;
-		var i, marker, location, addClickEvent;
+		var locations = self.locationsList;
+		var locationsLength = locations.length;
+		var i, marker;
 		// make one info window
 		self.infoWindow = new google.maps.InfoWindow({
 			maxWidth: 300
@@ -235,8 +248,8 @@ var ViewModel = function() {
 		for (i = 0; i < locationsLength; i++) {
 			// make markers
 			marker = new google.maps.Marker({
-				position: Model.locations[i].coordinates,
-				icon: Model.locations[i].icon
+				position: locations[i].coordinates,
+				icon: locations[i].icon
 			});
 			marker.setMap(self.map);
 			// add each marker to an array
@@ -257,17 +270,17 @@ var ViewModel = function() {
 		});
 	};
 
-	self.openInfoWindow = function(markerCopy) {
+	self.setUpInfoWindow = function(markerCopy) {
 		var infoWindow = self.infoWindow;
 		// set the right content
 		infoWindow.setContent(Model.infoWindowContent);
-		// open the info window when clicked
+		// open the info window when a marker is clicked
 		infoWindow.open(self.map, markerCopy);
 
-		self.animateMarkers(markerCopy);
+		self.setUpMarkerAnimation(markerCopy);
 	};
 
-	self.animateMarkers = function(markerCopy) {
+	self.setUpMarkerAnimation = function(markerCopy) {
 		// make any previously clicked marker stop bouncing
 		self.markersList.forEach(function(element) {
 			element.setAnimation(null);
@@ -289,6 +302,7 @@ var ViewModel = function() {
 		var searchValue = new RegExp(self.query(), 'i');
 		var i, result;
 
+		// reset everything
 		self.infoWindow.close();
 		// first make all markers show on screen
 		self.markersList.forEach(function(element) {
@@ -314,9 +328,10 @@ var ViewModel = function() {
 	self.query.subscribe(self.search);
 
 	// name is the category clicked by the user
-	self.show = function(name) {
+	self.setUpCategoryFilter = function(name) {
 		var i, result;
 
+		// reset everything
 		self.infoWindow.close();
 		// first show all markers and list items on screen
 		self.markersList.forEach(function(element) {
