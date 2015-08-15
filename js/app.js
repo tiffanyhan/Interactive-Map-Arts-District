@@ -276,7 +276,7 @@ var ViewModel = function() {
 	self.markersList = [];
 
 	// initialize the map
-	self.initialize = function() {
+	self.initializeMap = function() {
 		// create the map
 		var mapCanvas = document.getElementById('map-canvas');
 		self.map = new google.maps.Map(mapCanvas, Model.mapOptions);
@@ -304,7 +304,7 @@ var ViewModel = function() {
 		}
 	};
 	// wait until the page has loaded to create the map
-	google.maps.event.addDomListener(window, 'load', this.initialize);
+	google.maps.event.addDomListener(window, 'load', self.initializeMap);
 
 	// when a marker is clicked, open an info window and animate the marker
 	self.makeInfoWindow = function(i, markerCopy) {
