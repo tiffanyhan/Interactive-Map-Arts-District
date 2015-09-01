@@ -7,7 +7,7 @@ if (typeof google === 'undefined') {
 var Model = {
 	// options to set up our google map
 	mapOptions: {
-		center: {lat: 34.044174, lng: -118.236128},
+		center: {lat: 34.044265, lng: -118.232622},
 		zoom: 15,
 		mapTypeId: google.maps.MapTypeId.TERRAIN,
 		mapTypeControlOptions: {
@@ -17,7 +17,7 @@ var Model = {
 			position: google.maps.ControlPosition.LEFT_TOP
 		},
 		zoomControlOptions: {
-			position: google.maps.ControlPosition.RIGHT_CENTER
+			position: google.maps.ControlPosition.LEFT_CENTER
 		}
 	},
 
@@ -52,8 +52,8 @@ var Model = {
 			type: 'fun',
 		},
 		{
-			name: 'Guerilla Tacos',
-			type: 'food'
+			name: 'The Escondite',
+			category: 'food'
 		}
 	],
 
@@ -171,8 +171,10 @@ var Model = {
 		$.ajax(fullURL, {
 			dataType: 'jsonp',
 			success: function(data) {
+				console.log(data);
 				// our basic data object for each location
 				var dataObj = data.response.venue;
+				console.log(dataObj);
 				// avoid repetition in accessing our data object
 				var location = dataObj.location;
 				var firstPhoto = dataObj.bestPhoto;
@@ -341,6 +343,19 @@ var ViewModel = function() {
 	// link each list item to the correct info window
 	self.makeListClickable = function(index) {
 		google.maps.event.trigger(self.markersList[index()], 'click');
+		self.hideList();
+	};
+
+	self.hideList = function() {
+		if ($(window).width() < 750) {
+			$('.list-container').hide();
+			$('.show-locations').show();
+		}
+	};
+
+	self.showList = function() {
+		$('.list-container').show();
+		$('.show-locations').hide();
 	};
 
 	self.search = function() {

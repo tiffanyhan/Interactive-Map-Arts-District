@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Arts District | Los Angeles</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 		<link rel="stylesheet" href="style.css">
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBo5PO8DIjY-j-2UbddSuDcKGV2d4XVx9g"></script>
 	</head>
@@ -21,7 +21,9 @@
 			</span>
 		</div>
 
-		<div id="map-canvas"></div>
+		<div data-bind="click: hideList" id="map-canvas"></div>
+
+		<div data-bind="click: showList" class="show-locations">&#x2261;</div>
 
 		<div class="list-container">
 			<ul data-bind="foreach: locationsList" class="list">

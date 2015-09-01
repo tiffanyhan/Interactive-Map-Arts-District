@@ -15,7 +15,7 @@ body {
 
 #map-canvas {
 	width: 100%;
-	height: 66%;
+	height: 100%;
 }
 
 /* -------------- search box -------------- */
@@ -68,11 +68,15 @@ body {
 /* ------------------ list view ----------------- */
 
 .list-container {
-	width: 98%;
-	height: 33%;
+	width: 30%;
+	min-width: 225px;
+	height: auto;
 	position: absolute;
 	z-index: 1;
 	background-color: white;
+	top: 83px;
+	right: 0;
+	display: none;
 }
 
 .list {
@@ -95,6 +99,19 @@ body {
 	text-align: center;
 	width: 97%;
 	flex-grow: 1;
+}
+
+.show-locations {
+	position: absolute;
+	bottom: 0;
+	right: 7px;
+	font-size: 50px;
+	font-weight: bold;
+	background-color: white;
+	padding: 25px;
+	padding-left: 10px;
+	padding-right: 10px;
+	border: 1px solid black;
 }
 
 /* --------------- info window content -------------- */
@@ -151,14 +168,12 @@ body {
 	}
 }
 
-@media screen and (min-width: 550px) {
-	.list-item {
-		width: 48.5%;
+@media screen and (min-width: 750px) {
+	.list-container {
+		display: block;
 	}
-}
 
-@media screen and (min-width: 800px) {
-	.list-item {
-		width: 32.33%;
+	.show-locations {
+		display: none;
 	}
 }
