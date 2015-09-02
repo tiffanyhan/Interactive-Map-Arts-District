@@ -50,10 +50,6 @@ var Model = {
 		{
 			name: 'Angel City Brewery',
 			type: 'fun',
-		},
-		{
-			name: 'The Escondite',
-			category: 'food'
 		}
 	],
 
@@ -184,39 +180,41 @@ var Model = {
 				// info window sections inclue basic information,
 				// popularity/category, photos, tips, and attribution
 				Object.defineProperty(Model, 'infoWindowContent', {
-					value: '<h1>' + dataObj.name + '</h1>' +
-					'<p>' + location.address + '</p>' +
-					'<p>' + location.formattedAddress[1] + '</p>' +
-					'<a target="_blank" href="' + dataObj.url + '">' + 'Website' + '</a>' +
-					' | ' + '<span>' + dataObj.contact.formattedPhone + '</span>' +
-					'<p class="hours">' + dataObj.hours.status + ' today' + '</p>' +
+					value: '<div class="info-window">' +
+						'<h1>' + dataObj.name + '</h1>' +
+						'<p>' + location.address + '</p>' +
+						'<p>' + location.formattedAddress[1] + '</p>' +
+						'<a target="_blank" href="' + dataObj.url + '">' + 'Website' + '</a>' +
+						' | ' + '<span>' + dataObj.contact.formattedPhone + '</span>' +
+						'<p class="hours">' + dataObj.hours.status + ' today' + '</p>' +
 
-					'<hr>' +
+						'<hr>' +
 
-					'<p>' +
-						'<span>' + '<strong class="rating green-text">' + dataObj.rating + '</strong>' + '/10 rating' + '</span>' +
-					' | ' + '<span>' + '<strong>' + dataObj.likes.count + '</strong>' + ' likes' + '</span>' +
-					'</p>' +
-					'<p class="line-height category">' + dataObj.categories[0].name + '</p>' +
-
-					'<a target="_blank" class="plain-link" href="' + dataObj.canonicalUrl + '"' + 'ref="' + fourSquare.clientID +'"' + '>' +
-						'<img class="best-photo" src="' + firstPhoto.prefix + '125x125' + firstPhoto.suffix + '">' +
-						'<img class="second-photo" src="' + secondPhoto.prefix + '125x125' + secondPhoto.suffix + '">' +
-					'</a>' +
-
-					'<a target="_blank" class="plain-link" href="' + dataObj.canonicalUrl + '"' + 'ref="' + fourSquare.clientID +'"' + '>' +
-						'<p class="line-height">' +
-							'<strong>' + 'Tip 1:  ' + '</strong>' + tips[0].text +
+						'<p>' +
+							'<span>' + '<strong class="rating green-text">' + dataObj.rating + '</strong>' + '/10 rating' + '</span>' +
+						' | ' + '<span>' + '<strong>' + dataObj.likes.count + '</strong>' + ' likes' + '</span>' +
 						'</p>' +
-						'<p class="line-height">' +
-							'<strong>' + 'Tip 2:  ' + '</strong>' + tips[1].text +
-						'</p>' +
-						'<p class="line-height">' +
-							'<strong>' + 'Tip 3:  ' + '</strong>' + tips[2].text +
-						'</p>' +
-					'</a>' + '<br>' +
+						'<p class="line-height category">' + dataObj.categories[0].name + '</p>' +
 
-					'<a href="http://foursquare.com">' + '<img src="images/foursquare.png">' + '</p>' + '</a>'
+						'<a target="_blank" class="plain-link" href="' + dataObj.canonicalUrl + '"' + 'ref="' + fourSquare.clientID +'"' + '>' +
+							'<img class="best-photo" src="' + firstPhoto.prefix + '125x125' + firstPhoto.suffix + '">' +
+							'<img class="second-photo" src="' + secondPhoto.prefix + '125x125' + secondPhoto.suffix + '">' +
+						'</a>' +
+
+						'<a target="_blank" class="plain-link" href="' + dataObj.canonicalUrl + '"' + 'ref="' + fourSquare.clientID +'"' + '>' +
+							'<p class="line-height">' +
+								'<strong>' + 'Tip 1:  ' + '</strong>' + tips[0].text +
+							'</p>' +
+							'<p class="line-height">' +
+								'<strong>' + 'Tip 2:  ' + '</strong>' + tips[1].text +
+							'</p>' +
+							'<p class="line-height">' +
+								'<strong>' + 'Tip 3:  ' + '</strong>' + tips[2].text +
+							'</p>' +
+						'</a>' + '<br>' +
+
+						'<a href="http://foursquare.com">' + '<img src="images/foursquare.png">' + '</p>' + '</a>' +
+					'</div>'
 				});
 
 				clearTimeout(timeout);
@@ -289,7 +287,7 @@ var ViewModel = function() {
 		var i, marker;
 		// make one info window
 		self.infoWindow = new google.maps.InfoWindow({
-			maxWidth: 300
+			maxWidth: 300,
 		});
 		// for loop makes markers with info windows
 		for (i = 0; i < locationsLength; i++) {
