@@ -101,18 +101,15 @@ function app() {
 
 						i = this.i
 						// set properties of location with correct data
-						Object.defineProperties(locations[i], {
-							'coordinates' : {
-								value: {
-									lat: lat,
-									lng: lng
-								}
-							},
+						locations[i].coordinates = {
+							lat: lat,
+							lng: lng
+						};
 
-							'fourSquareID': {
-								value: venueID
-							}
-						});
+						locations[i].fourSquareID = venueID;
+
+						console.log('success');
+						console.log(locations[i]);
 
 						clearTimeout(timeout);
 					}
@@ -271,6 +268,12 @@ function app() {
 		Model.locations.forEach(function(element) {
 			self.locationsList.push(element);
 		});
+
+		console.log(self.locationsList);
+
+		for (var i = 0; i < self.locationsList.length; i++) {
+			console.log(self.locationsList[i]);
+		}
 		// put locations length in VM for use in search and show functions
 		self.locationsListLength = self.locationsList.length;
 
