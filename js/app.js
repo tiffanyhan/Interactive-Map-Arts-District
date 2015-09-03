@@ -108,9 +108,6 @@ function app() {
 
 						locations[i].fourSquareID = venueID;
 
-						console.log('success');
-						console.log(locations[i]);
-
 						myViewModel.initializeMap();
 
 						clearTimeout(timeout);
@@ -267,11 +264,6 @@ function app() {
 			self.locationsList.push(element);
 		});
 
-		console.log(self.locationsList);
-
-		for (var i = 0; i < self.locationsList.length; i++) {
-			console.log(self.locationsList[i]);
-		}
 		// put locations length in VM for use in search and show functions
 		self.locationsListLength = self.locationsList.length;
 
@@ -403,8 +395,6 @@ function app() {
 			// for loop makes markers with info windows
 			for (i = 0; i < locationsLength; i++) {
 				// make markers
-				console.log(locations);
-				console.log(locations[i].coordinates);
 				marker = new google.maps.Marker({
 					position: locations[i].coordinates,
 					icon: locations[i].icon
