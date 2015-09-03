@@ -111,6 +111,8 @@ function app() {
 						console.log('success');
 						console.log(locations[i]);
 
+						myViewModel.initializeMap();
+
 						clearTimeout(timeout);
 					}
 				});
@@ -416,7 +418,6 @@ function app() {
 		};
 		// wait until the page has loaded to create the map
 		// google.maps.event.addDomListener(window, 'load', self.initializeMap);
-		self.initializeMap();
 
 		// prevent form from submitting when user presses enter key
 		$(document).on('keypress', 'form', function(e) {
