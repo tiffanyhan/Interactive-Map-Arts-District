@@ -136,11 +136,7 @@ function app() {
 				else if (locationType === 'fun')
 					color = 'blue';
 
-				// set icon property of location with image
-				// of the marker that is the correct color
-				Object.defineProperty(location, 'icon', {
-					value: 'images/' + color + '-dot.png'
-				});
+				location.icon = 'images/' + color + '-dot.png';
 			}
 		},
 
@@ -406,7 +402,7 @@ function app() {
 			for (i = 0; i < locationsLength; i++) {
 				// make markers
 				console.log(locations);
-				console.log(locations[i]);
+				console.log(locations[i].coordinates);
 				marker = new google.maps.Marker({
 					position: locations[i].coordinates,
 					icon: locations[i].icon
