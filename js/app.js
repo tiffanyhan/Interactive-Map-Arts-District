@@ -108,9 +108,11 @@ function app() {
 
 						locations[i].fourSquareID = venueID;
 
-						myViewModel.initializeMap();
-
 						clearTimeout(timeout);
+
+						if (i === locationsLength - 1) {
+							myViewModel.initializeMap();
+						}
 					}
 				});
 			}
@@ -161,10 +163,8 @@ function app() {
 			$.ajax(fullURL, {
 				dataType: 'jsonp',
 				success: function(data) {
-					console.log(data);
 					// our basic data object for each location
 					var dataObj = data.response.venue;
-					console.log(dataObj);
 					// avoid repetition in accessing our data object
 					var location = dataObj.location;
 					var firstPhoto = dataObj.bestPhoto;
@@ -269,6 +269,7 @@ function app() {
 
 		// make an array to hold each marker
 		self.markersList = [];
+		console.log(self.markersList);
 
 		// when a marker is clicked, open an info window and animate the marker
 		self.makeInfoWindow = function(i, markerCopy) {
@@ -304,6 +305,7 @@ function app() {
 
 		// link each list item to the correct info window
 		self.makeListClickable = function(index) {
+			console.log(self.markersList[index()]);
 			google.maps.event.trigger(self.markersList[index()], 'click');
 			self.hideList();
 		};
@@ -392,6 +394,7 @@ function app() {
 			self.infoWindow = new google.maps.InfoWindow({
 				maxWidth: 300,
 			});
+			console.log(locationsLength);
 			// for loop makes markers with info windows
 			for (i = 0; i < locationsLength; i++) {
 				// make markers
@@ -404,6 +407,7 @@ function app() {
 				self.markersList.push(marker);
 				// add info windows
 				self.makeInfoWindow(i, marker);
+				console.log(marker);
 			}
 		};
 		// wait until the page has loaded to create the map
