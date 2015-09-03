@@ -4,8 +4,14 @@
 		<meta charset="utf-8">
 		<title>Arts District | Los Angeles</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-		<link rel="stylesheet" href="style.css">
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBo5PO8DIjY-j-2UbddSuDcKGV2d4XVx9g"></script>
+
+		<script async src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+		</script>
+		<script async src="js/knockout-3.3.0.js"></script>
+
+		<style>
+			.filter-item,.list-item,.show-locations{border:1px solid #000}.list-container,.show-locations{position:absolute;background-color:#fff}body,html{height:100%}h1{font-size:1.2em}body{line-height:.6em;font-family:arial}#map-canvas{width:100%;height:85%}.search-box{font-size:1em;width:100%;-webkit-appearance:none;height:40px}.filter-container{max-width:500px;margin:0 auto}.filter{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;flex-wrap:wrap;-webkit-flex-wrap:wrap;-ms-flex-align:center;-webkit-align-items:center;-webkit-box-align:center;align-items:center;margin:5px}.filter-item,.list{padding:0;margin:0}.filter-item{font-size:1em;background-color:#fff;max-width:120px;height:25px;flex-grow:1;-webkit-flex-grow:1}.filter-img{display:inline-block;width:12px}.list-container{width:30%;min-width:225px;height:auto;z-index:1;top:83px;right:0;display:none}.list{list-style:none;display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;flex-wrap:wrap;-webkit-flex-wrap:wrap}.list-item{font-size:1.5em;line-height:2em;text-align:center;width:97%;flex-grow:1}.show-locations{bottom:12px;right:9px;font-size:50px;font-weight:700;padding:25px 10px}.info-window{max-height:300px;overflow-y:auto}.hours{font-size:.9em;padding-top:5px}.rating{font-size:1.3em}.green-text{color:green}.line-height{line-height:1.4em}.category{margin-top:5px;color:gray}.best-photo{margin-right:5px}.best-photo,.second-photo{margin-bottom:5px}.plain-link{color:#000;text-decoration:none}@media screen and (min-width:320px){.filter{flex-basis:0}}@media screen and (min-width:750px){.list-container{display:block}.show-locations{display:none}}@media screen and (orientation:landscape){.info-window{max-height:175px}}
+		</style>
 	</head>
 	<body>
 		<div class="user-inputs">
@@ -23,7 +29,7 @@
 			</div>
 		</div>
 
-		<div data-bind="click: hideList" id="map-canvas"></div>
+		<div id="map-canvas"></div>
 
 		<div data-bind="click: showList" class="show-locations">&#x2261;</div>
 
@@ -33,9 +39,24 @@
 			</ul>
 		</div>
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
-		</script>
-		<script src="js/knockout-3.3.0.js"></script>
 		<script src="js/app.js"></script>
+
+		<script>
+
+			function initialize() {
+				app();
+			}
+
+			function loadScript() {
+				var script = document.createElement('script');
+				script.type = 'text/javascript';
+				script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBo5PO8DIjY-j-2UbddSuDcKGV2d4XVx9g&callback=initialize';
+				document.body.appendChild(script);
+			}
+
+			window.onload = loadScript;
+
+		</script>
+
 	</body>
 </html>
