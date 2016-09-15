@@ -79,6 +79,7 @@ function app() {
 			var i, fullURL, dataObj, lat, lng, venueID;
 			var locations = Model.locations;
 			var locationsLength = locations.length;
+			var counter = 0;
 
 			var timeout = setTimeout(function() {
 				alert('ERROR: Failed to get location resources');
@@ -108,9 +109,10 @@ function app() {
 
 						locations[i].fourSquareID = venueID;
 
-						clearTimeout(timeout);
+						counter++;
 
-						if (i === locationsLength - 1) {
+						if (counter === locationsLength) {
+							clearTimeout(timeout);
 							myViewModel.initializeMap();
 						}
 					}
@@ -163,6 +165,7 @@ function app() {
 			$.ajax(fullURL, {
 				dataType: 'jsonp',
 				success: function(data) {
+					console.log(data);
 					// our basic data object for each location
 					var dataObj = data.response.venue;
 					// avoid repetition in accessing our data object
