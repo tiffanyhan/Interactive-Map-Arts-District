@@ -1,6 +1,5 @@
-Neighborhood Map Project: Arts District of Downtown Los Angeles
-===============================================================
-
+Interactive Map of Arts District in Downtown LA
+===============================================
 First, open index.html.
 
 	Now you may:
